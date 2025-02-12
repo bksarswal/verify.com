@@ -37,13 +37,17 @@ const Signin = () => {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
   
       // Admin Credentials Check
-      if (formData.email === "ram@gmail.com" && formData.password === "ram@12345") {
+      const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
+      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
+      
+      if (formData.email === adminEmail && formData.password === adminPassword) {
         localStorage.setItem("isAdmin", "true");
         navigate("/admindashboard");
       } else {
         localStorage.setItem("isAdmin", "false");
         navigate("/dashboard");
       }
+      
   
       localStorage.setItem("userToken", "true");
     } catch (error) {
