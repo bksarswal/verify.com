@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from "react";
 import app from "../../Config/firebaseConfig";
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
-const DashboardHome = () => {
+const Updateitms = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const isAdmin = localStorage.getItem("isAdmin") === "true"; // ✅ Check if user is admin
 
   useEffect(() => {
     const db = getFirestore(app);
-    const taskCollection = collection(db, "datsa"); // 👈 Ensure collection name is correct
+    const taskCollection = collection(db, "datsa");
 
     const unsubscribe = onSnapshot(
       taskCollection,
       (snapshot) => {
-        console.log("Fetching Firestore Data..."); // Debugging log
-        const taskList = snapshot.docs.map((doc) => {
-          console.log("Firestore Doc:", doc.data()); // Debugging log
-          return {
-            id: doc.id,
-            ...doc.data(),
-            verified: false,
-            code: "",
-          };
-        });
+        const taskList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          verified: false,
+          code: "",
+        }));
 
         setTasks(taskList);
         setLoading(false);
@@ -54,14 +58,48 @@ const DashboardHome = () => {
     );
   };
 
-  // ✅ Field names fix kiye hain
-  const offlineTasks = [
-    { id: "offline1", LinksValue: "http://example1.com", Earinhg: "$3.00", code: "", verified: false },
-    { id: "offline2", LinksValue: "http://example2.com", Earinhg: "$4.00", code: "", verified: false },
-    { id: "offline3", LinksValue: "http://example3.com", Earinhg: "$6.00", code: "", verified: false },
-    { id: "offline4", LinksValue: "http://example4.com", Earinhg: "$7.00", code: "", verified: false },
-    { id: "offline5", LinksValue: "http://example5.com", Earinhg: "$8.00", code: "", verified: false },
-  ];
+  // ✅ Update Task in Firestore
+  const handleUpdate = async (id, updatedLink, updatedEarning) => {
+    try {
+      const db = getFirestore(app);
+      const taskRef = doc(db, "datsa", id);
+
+      await updateDoc(taskRef, {
+        LinksValue: updatedLink,
+        Earinhg: updatedEarning,
+      });
+
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id
+            ? { ...task, LinksValue: updatedLink, Earinhg: updatedEarning }
+            : task
+        )
+      );
+
+      alert("Task updated successfully!");
+    } catch (error) {
+      console.error("Error updating task:", error);
+      alert("Failed to update task.");
+    }
+  };
+
+  // ✅ Delete Task from Firestore
+  const handleDelete = async (id) => {
+    try {
+      const db = getFirestore(app);
+      const taskRef = doc(db, "datsa", id);
+
+      await deleteDoc(taskRef);
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+
+      alert("Task deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      alert("Failed to delete task.");
+    }
+  };
 
   return (
     <div className="min-h-screen mt-24 bg-gray-100 py-8">
@@ -81,15 +119,31 @@ const DashboardHome = () => {
                 <th className="border border-gray-300 px-4 py-2 text-left">Earning</th>
                 <th className="border border-gray-300 px-4 py-2 text-left">Enter Code</th>
                 <th className="border border-gray-300 px-4 py-2 text-left">Status</th>
+                {isAdmin && <th className="border border-gray-300 px-4 py-2 text-left">Actions</th>}
               </tr>
             </thead>
             <tbody>
-              {/* ✅ Offline + Firestore Tasks Merge */}
-              {[...offlineTasks, ...tasks].map((task, index) => (
+              {tasks.map((task, index) => (
                 <tr key={task.id} className="hover:bg-gray-100">
                   <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-300 text-blue-500 px-4 py-2">{task.LinksValue}</td>
-                  <td className="border border-gray-300 px-4 py-2">{task.Earinhg}</td>
+                  <td className="border border-gray-300 text-blue-500 px-4 py-2">
+                    <input
+                      type="text"
+                      value={task.LinksValue}
+                      onChange={(e) => handleUpdate(task.id, e.target.value, task.Earinhg)}
+                      className="border border-gray-300 px-2 py-1 rounded-md w-full"
+                      disabled={!isAdmin}
+                    />
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <input
+                      type="text"
+                      value={task.Earinhg}
+                      onChange={(e) => handleUpdate(task.id, task.LinksValue, e.target.value)}
+                      className="border border-gray-300 px-2 py-1 rounded-md w-full"
+                      disabled={!isAdmin}
+                    />
+                  </td>
                   <td className="border border-gray-300 px-4 py-2">
                     <input
                       type="text"
@@ -114,6 +168,22 @@ const DashboardHome = () => {
                       </button>
                     )}
                   </td>
+                  {isAdmin && (
+                    <td className="border border-gray-300 px-4 py-2">
+                      <button
+                        onClick={() => handleUpdate(task.id, task.LinksValue, task.Earinhg)}
+                        className="bg-yellow-500 text-white px-3 py-1 rounded-md mr-2 hover:bg-yellow-600 transition"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => handleDelete(task.id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -124,4 +194,4 @@ const DashboardHome = () => {
   );
 };
 
-export default DashboardHome;
+export default Updateitms;

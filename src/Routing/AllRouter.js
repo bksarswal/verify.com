@@ -1,32 +1,24 @@
-
+import { Outlet } from 'react-router-dom'
+import Footer from '../Layout/Footer'
+import Navbar from '../Layout/Navbar'
 import React from 'react'
-import { Routes,Route } from "react-router-dom";
-import About from '../Screens/About';
-import Navbar from '../Layout/Navbar';
-import Home from '../Screens/Home';
-import HowItWorks from '../Screens/HowItsWork';
-import Footer from '../Layout/Footer';
 
 
-
-
-function AllRouter() {
+const AllRouter = () => {
   return (
-    <>   
-                {/* Navbar */}
-      
-          <Navbar />
-         
-           <Routes>
-          <Route path="/" element={<Home /> } />
-          <Route path="/home" element={<Home/> } />
-          <Route path="/about" element={<About/>  } />
-          <Route path='/howitsworks' element={<HowItWorks/>}/>
-      
-        </Routes>
-        
+    <div>
 
-    </>
+
+      <Navbar/>
+
+      <Outlet/>
+      <Footer/>
+
+
+
+
+
+    </div>
   )
 }
 

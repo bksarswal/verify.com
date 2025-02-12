@@ -24,7 +24,7 @@ export default function Navbar() {
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
           <Link
-            to="/"
+            to="/home"
             className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins"
           >
             Home
@@ -115,24 +115,24 @@ export default function Navbar() {
               isMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="flex  bg-slate-400 min-h-lvh flex-col space-y-6 p-6">
+            <div className="flex  bg-[#96f5f5]  min-h-lvh flex-col space-y-6 p-6">
               <Link
                 to="/"
-                className="text-[18px] font-bold font-poppins hover:text-gray-200 transition-colors"
+                className="text-[18px] font-bold font-poppins hover:text-yellow-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/how-it-works"
-                className="text-[18px] font-bold font-poppins hover:text-gray-200 transition-colors"
+                className="text-[18px] font-bold font-poppins hover:text-yellow-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 How it&apos;s Work
               </Link>
               <Link
                 to="/about"
-                className="text-[18px] font-bold font-poppins hover:text-gray-200 transition-colors"
+                className="text-[18px] font-bold font-poppins hover:text-yellow-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About Us

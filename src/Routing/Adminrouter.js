@@ -1,12 +1,14 @@
+import AdminNavbar from '../Layout/AdminNavbar'
 import Footer from '../Layout/Footer'
-import Navbar from '../Layout/Navbar'
+
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const AuthRouter = () => {
+const Adminrouter = () => {
   return (
     <div>
-      <Navbar/>
+        
+        <AdminNavbar/>
 
         <Outlet/>
 
@@ -15,4 +17,4 @@ const AuthRouter = () => {
   )
 }
 
-export default AuthRouter
+export default Adminrouter

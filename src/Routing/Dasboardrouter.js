@@ -1,24 +1,20 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import Footer from '../Layout/Footer'
+import DashbordNavbar from '../Layout/DasbordNavbar/DashborNavmain/DashbordNavmain'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
 
-import DashbordNavbar from '../Layout/DasbordNavbar/DashborNavmain/DashbordNavmain';
-import Dashboard from '../Screens/Dashboard/DashboardHome';
-
-function Dashboardrouter() {
+const Dasboardrouter = () => {
   return (
-    <>
-      {/* Add the Dashboard Navbar */}
-      <DashbordNavbar/>
-      
-      {/* Define Routes */}
-      <Routes>
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/dashbord" element={<Dashboard/>} />
-        
-        
-      </Routes>
-    </>
-  );
+    <div>
+
+<DashbordNavbar/>
+
+<Outlet/>
+
+<Footer/>
+
+    </div>
+  )
 }
 
-export default Dashboardrouter;
+export default Dasboardrouter

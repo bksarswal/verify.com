@@ -1,148 +1,119 @@
 import React, { useState } from 'react';
-// import { input } from "../components/ui/input"
-// import { button } from "../components/ui/button"
-// import { Checkbox } from "../components/ui/checkbox"
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from '../Config/firebaseConfig';
 
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  // Keeping all the existing state and validation logic
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
-    password: '',
-    confirmPassword: '',
-    acceptTerms: false
+    password: ''
   });
-
   const [errors, setErrors] = useState({});
-  
-  // Keeping all the existing validation functions and handlers
-  const validateUsername = (username) => {
-    if (!username) return "Username is required";
-    if (username.length < 3 || username.length > 15) {
-      return "Username must be 3-15 characters long";
-    }
-    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      return "Username can only contain letters, numbers, and underscores";
-    }
-    return "";
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ... keeping other validation functions ...
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
     }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
     }
   };
 
-  const handleSubmit = (e) => {
-    // Keeping existing submit logic
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // ... validation logic ...
+    setIsSubmitting(true);
+    
+    const newErrors = {};
+    if (!formData.email) {
+      newErrors.email = '*Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = '*Please enter a valid email address.';
+    }
+    if (!formData.password) {
+      newErrors.password = '*Password is required';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    try { 
+      const auth = getAuth(app);
+      await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      
+      alert('Signup successful');
+      navigate('/signin')
+    } catch (error) {
+      setErrors({
+        auth: '*An error occurred. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleSignup = () => {
+    console.log('Google signup clicked');
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-[#F2FAFA] rounded-[30px] p-8 relative">
-        {/* Close button */}
-        <button className="absolute top-6 right-6 text-black hover:text-gray-700">
-          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M6 18L18 6M6 6l12 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-
+    <div className="min-h-screen mt-14 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full rounded-[30px] bg-[#F2FAFA] p-8 relative">
         <h2 className="text-[48px] font-bold text-center mb-8 font-poppins">Signup</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <input
-              name="username"
-              type="text"
-              placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[16px]"
-            />
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1 font-poppins">*{errors.username}</p>
-            )}
-          </div>
-
-          <div>
-            <input
-              name="email"
               type="email"
-              placeholder="Email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-3 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[16px]"
+              placeholder="Email"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1 font-poppins">*{errors.email}</p>
-            )}
+            {errors.email && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.email}</p>}
           </div>
 
           <div>
             <input
-              name="password"
               type="password"
-              placeholder="Create Password"
+              name="password"
               value={formData.password}
               onChange={handleChange}
               className="w-full px-4 py-3 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[16px]"
+              placeholder="Password"
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1 font-poppins">*{errors.password}</p>
-            )}
-          </div>
-
-          <div>
-            <input
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[16px]"
-            />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1 font-poppins">*{errors.confirmPassword}</p>
-            )}
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <input
-              id="acceptTerms"
-              name="acceptTerms"
-              type ='checkbox'
-              checked={formData.acceptTerms}
-              onCheckedChange={(checked) => handleChange({ target: { name: 'acceptTerms', type: 'checkbox', checked } })}
-              className="border-black"
-            />
-            <label htmlFor="acceptTerms" className="text-sm font-poppins">
-              I agree to the{' '}
-              <a href="#" className="text-[#2196F3]">Terms & Conditions</a>
-              {' '}and{' '}
-              <a href="#" className="text-[#2196F3]">Privacy Policy</a>
-            </label>
+            {errors.password && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.password}</p>}
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#2196F3] text-white py-3 rounded-xl hover:bg-[#1976D2] focus:outline-none focus:ring-2 focus:ring-[#2196F3] focus:ring-offset-2 font-poppins text-[18px] mt-6"
+            disabled={isSubmitting}
+            className="w-full bg-[#2196F3] text-white py-3 rounded-xl hover:bg-[#1976D2] focus:outline-none focus:ring-2 focus:ring-[#2196F3] focus:ring-offset-2 disabled:opacity-50 transition-colors font-poppins text-[18px]"
           >
-            Signup
+            {isSubmitting ? 'Signing up...' : 'Signup with Email'}
           </button>
+
           <div className="text-center font-poppins">
             Already have an account?{' '}
-            <a href="#" className="text-[#2196F3] hover:text-[#1976D2]">
-              Login
+            <a href="/signin" className="text-[#2196F3] hover:text-[#1976D2]">
+              Sign in
             </a>
           </div>
 
@@ -154,10 +125,9 @@ const Signup = () => {
               <span className="px-4 bg-white text-gray-500 font-poppins">Or</span>
             </div>
           </div>
-
           <button
             type="button"
-            onClick={() => console.log('Google signup clicked')}
+            onClick={handleGoogleSignup}
             className="w-full flex items-center justify-center px-4 py-3 border border-black rounded-xl text-black bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2196F3] font-poppins"
           >
             <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
@@ -178,10 +148,8 @@ const Signup = () => {
                 fill="#EA4335"
               />
             </svg>
-            Signup with Google
+            Login with Google
           </button>
-
-          
         </form>
       </div>
     </div>

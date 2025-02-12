@@ -75,7 +75,7 @@ function ResetPassword(){
 
   return (
     <div className="min-h-screen  mt-16 flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white rounded-[30px] bg-[#F2FAFA] p-8 relative">
+      <div className="max-w-md w-full  rounded-[30px] bg-[#F2FAFA] p-8 relative">
         {/* Close button */}
         <button className="absolute top-6 right-6 text-black hover:text-gray-700">
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -119,8 +119,8 @@ function ResetPassword(){
           </div>
          < div className="text-center font-poppins">
             Already have an account?{' '}
-            <a href="/login" className="text-[#2196F3] hover:text-[#1976D2]">
-              Login
+            <a href="/signin" className="text-[#2196F3] hover:text-[#1976D2]">
+              Signin
             </a>
           </div>
 

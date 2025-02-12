@@ -3,6 +3,9 @@ import Badge from "../Badge/Badge";
 import Avatar from "../Avatar/Avatar";
 import accountBalanceWalletIcon from "../DashborNavmain/account-balance-wallet-55dp-000000-fill0-wght400-grad0-opsz48-1.png";
 import logoImage from "../DashborNavmain/imadsdge-1.png";
+import Logout from "../../../Screens/Logout";
+import logoutIcon from "./account-balance-wallet-55dp-000000-fill0-wght400-grad0-opsz48-1.png"; // Add your logout icon here
+import { Link } from "react-router-dom";
 
 function DashbordNavbar() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -10,6 +13,7 @@ function DashbordNavbar() {
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
+
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white  py-5 shadow-sm z-50">
@@ -41,25 +45,25 @@ function DashbordNavbar() {
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
           <a
-            href="#dashboard"
+            href="/dashboard"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Dashboard
           </a>
           <a
-            href="#withdraw"
+            href="/withdraw"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw
           </a>
           <a
-            href="#referral"
+            href="/referral"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Referral
           </a>
           <a
-            href="#task-history"
+            href="/task-history"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Task History
@@ -71,6 +75,25 @@ function DashbordNavbar() {
           <Badge />
           <Avatar />
         </div>
+
+        {/* Logout Button with Icon */}
+        <button
+         
+          className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
+        >
+
+          <Link  to="/logout" className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700">
+          
+          <img
+             src={logoutIcon}
+            alt="Logout"
+            className="w-5 h-5"
+          />
+          <span>Logout</span>
+          
+          </Link>
+          
+        </button>
 
         {/* Mobile Menu */}
         <div className="flex md:hidden items-center">
@@ -100,25 +123,25 @@ function DashbordNavbar() {
         </button>
         <nav className="mt-16 px-4 space-y-4">
           <a
-            href="#dashboard"
+            href="/dashboard"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Dashboard
           </a>
           <a
-            href="#withdraw"
+            href="/withdraw"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw
           </a>
           <a
-            href="#referral"
+            href="/referral"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Referral
           </a>
           <a
-            href="#task-history"
+            href="/task-history"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Task History
