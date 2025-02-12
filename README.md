@@ -74,3 +74,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 "# VeriyEarnFrontend" 
 "# verify.com" 
 "# verify.com" 
+"# verify.com" 
