@@ -17,10 +17,10 @@ className="w-auto h-auto max-h-[587px] max-w-[606]"
     <h4 className="text-3xl md:text-4xl font-semibold text-[#1e88e5]">500+</h4>
     <p className="text-xl md:text-2xl text-[#9d9d9d]">Daily Users</p>
   </div>
-  <div className="absolut  -m-20 left-[30%]  bg-white rounded-[20px] shadow-[0px_1px_6px_#0000001a] px-4 py-6 text-center">
+  {/* <div className="absolut  -m-20 left-[30%]  bg-white rounded-[20px] shadow-[0px_1px_6px_#0000001a] px-4 py-6 text-center">
     <h4 className="text-3xl md:text-4xl font-semibold text-[#1e88e5]">300+</h4>
     <p className="text-xl md:text-2xl text-[#9d9d9d]">Task Available</p>
-  </div>
+  </div> */}
 </div>
 
 {/* Right section with text */}
