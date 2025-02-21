@@ -37,7 +37,7 @@ function DashbordNavbar() {
             alt="Account balance"
             src={accountBalanceWalletIcon}
           />
-          <span className="ml-2 text-[16px] md:text-[21px] font-bold text-[#1e88e5]">
+          <span className="ml-2 text-[16px] md:text-[21px] font-bold ">
             $10.00
           </span>
         </div>
@@ -73,7 +73,8 @@ function DashbordNavbar() {
         {/* Notification and Avatar */}
         <div className="hidden md:flex items-center space-x-4">
           <Badge />
-          <Avatar />
+          <a  href="/dashboard/profile"   className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"> <Avatar /></a>
+          
         </div>
 
         {/* Logout Button with Icon */}

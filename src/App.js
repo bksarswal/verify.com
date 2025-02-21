@@ -16,6 +16,7 @@ import AuthRouter from "./Routing/AuthRouter";
 import Adminhome from "./Screens/AdminDashbord/Adminhome";
 import Adminrouter from "./Routing/Adminrouter";
 import Updateitms from "./Screens/AdminDashbord/Updateitms";
+import UserProfilePage from "./Screens/Dashboard/Profile/Userprofile";
 
 const MainRouter = createBrowserRouter([
   {
@@ -53,6 +54,7 @@ const MainRouter = createBrowserRouter([
     children: [
       { path: "", element: <DashboardHome /> },
       { path: "home", element: <DashboardHome /> },
+      { path: "profile", element: <UserProfilePage /> },
     ],
   },
 
