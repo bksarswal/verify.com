@@ -45,25 +45,25 @@ function DashbordNavbar() {
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
           <Link
-            href="/dashboard"
+            to="/dashboard"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Dashboard
           </Link>
           <Link
-            href="/withdraw"
+            to="/withdraw"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw
           </Link>
           <Link
-            href="/referral"
+            to="/referral"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Referral
           </Link>
           <Link
-            href="/task-history"
+            to="/task-history"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Task History
@@ -73,7 +73,7 @@ function DashbordNavbar() {
         {/* Notification and Avatar */}
         <div className="hidden md:flex items-center space-x-4">
           <Badge />
-          <Link  href="/dashboard/profile"   className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"> <Avatar /></Link>
+          <Link  to="/dashboard/profile"   className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"> <Avatar /></Link>
           
         </div>
 
@@ -124,25 +124,25 @@ function DashbordNavbar() {
         </button>
         <nav className="mt-16 px-4 space-y-4">
           <Link
-            href="/dashboard"
+            to="/dashboard"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Dashboard
           </Link>
           <Link
-            href="/withdraw"
+            to="/withdraw"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw
           </Link>
           <Link
-            href="/referral"
+            to="/referral"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Referral
           </Link>
           <Link
-            href="/task-history"
+            to="/task-history"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Task History
