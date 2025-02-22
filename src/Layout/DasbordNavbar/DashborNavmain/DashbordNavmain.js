@@ -44,36 +44,36 @@ function DashbordNavbar() {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-          <a
+          <Link
             href="/dashboard"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Dashboard
-          </a>
-          <a
+          </Link>
+          <Link
             href="/withdraw"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw
-          </a>
-          <a
+          </Link>
+          <Link
             href="/referral"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Referral
-          </a>
-          <a
+          </Link>
+          <Link
             href="/task-history"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Task History
-          </a>
+          </Link>
         </nav>
 
         {/* Notification and Avatar */}
         <div className="hidden md:flex items-center space-x-4">
           <Badge />
-          <a  href="/dashboard/profile"   className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"> <Avatar /></a>
+          <Link  href="/dashboard/profile"   className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"> <Avatar /></Link>
           
         </div>
 
@@ -123,30 +123,30 @@ function DashbordNavbar() {
           <span className="block w-5 h-1 bg-black -rotate-45 transform origin-center"></span>
         </button>
         <nav className="mt-16 px-4 space-y-4">
-          <a
+          <Link
             href="/dashboard"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Dashboard
-          </a>
-          <a
+          </Link>
+          <Link
             href="/withdraw"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw
-          </a>
-          <a
+          </Link>
+          <Link
             href="/referral"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Referral
-          </a>
-          <a
+          </Link>
+          <Link
             href="/task-history"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
           >
             Task History
-          </a>
+          </Link>
         </nav>
       </div>
     </header>
