@@ -6,6 +6,7 @@ import UserInfoForm from "./UserInfoForm";
 import AccountDetailsForm from "./AccountDetailsForm";
 import SupportSection from "./SupportSection";
 import ChangePasswordForm from "./ChangePasswordForm";
+import { Link } from "react-router-dom";
 
 const UserProfilePage = () => {
   const [activeTab, setActiveTab] = useState("user-info");
@@ -36,7 +37,7 @@ const UserProfilePage = () => {
         <aside
           className={`${
             menuOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 fixed md:relative min-h-64 w-64 bg-[#F2FAFA] p-4 rounded-lg shadow-lg transition-transform  ease-in-out  md:block`}
+          } md:translate-x-0 fixed md:relative min-h-64 w-64 bg-[#F2FAFA]  p-4 rounded-lg shadow-lg transition-transform  ease-in-out  md:block`}
         >
           <nav className="space-y-2">
             {menuItems.map((item) => (
@@ -54,9 +55,9 @@ const UserProfilePage = () => {
                 {item.label}
               </button>
             ))}
-            <button className="w-full flex items-center p-3 bg-red-500 text-white rounded-lg">
-              <LogOut className="mr-2 h-5 w-5" />
-              Logout
+            <button className="w-full  p-3 bg-red-500 text-white rounded-lg">
+             <Link to="/logout" className="flex items-center"> <LogOut className="mr-2 h-5 w-5" />
+             Logout</Link>
             </button>
           </nav>
         </aside>

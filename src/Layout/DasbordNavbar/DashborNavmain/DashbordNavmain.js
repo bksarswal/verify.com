@@ -123,6 +123,7 @@ function DashbordNavbar() {
           <span className="block w-5 h-1 bg-black -rotate-45 transform origin-center"></span>
         </button>
         <nav className="mt-16 px-4 space-y-4">
+        <Link  to="/dashboard/profile"   className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"> Profile</Link>
           <Link
             to="/dashboard"
             className="block text-[16px] font-bold text-[#252525] hover:text-gray-700"
@@ -147,6 +148,7 @@ function DashbordNavbar() {
           >
             Task History
           </Link>
+         
         </nav>
       </div>
     </header>

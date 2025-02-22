@@ -85,10 +85,10 @@ const UserInfoForm = () => {
             disabled={!isEditing}
           />
         </div>
-        <div className="flex items-center gap-2">
-          <label className="w-1/3 text-gray-700 font-semibold">Gender</label>
+        <div className="flex items-center gap-2 ">
+          <label className="w-1/3 text-gray-700 font-semibold ">Gender</label>
           <select
-            className="w-2/3 p-2 border rounded-lg"
+            className="w-2/3 p-2 border rounded-lg z-0"
             name="gender"
             value={userInfo.gender}
             onChange={handleChange}
