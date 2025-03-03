@@ -17,6 +17,7 @@ import Adminhome from "./Screens/AdminDashbord/Adminhome";
 import Adminrouter from "./Routing/Adminrouter";
 import Updateitms from "./Screens/AdminDashbord/Updateitms";
 import UserProfilePage from "./Screens/Dashboard/Profile/Userprofile";
+import WithdrawalPag from "./Screens/Dashboard/Profile/Withdraw/Withdraw";
 
 const MainRouter = createBrowserRouter([
   {
@@ -55,6 +56,7 @@ const MainRouter = createBrowserRouter([
       { path: "", element: <DashboardHome /> },
       { path: "home", element: <DashboardHome /> },
       { path: "profile", element: <UserProfilePage /> },
+      { path: "withdraw", element: <WithdrawalPag /> },
     ],
   },
 

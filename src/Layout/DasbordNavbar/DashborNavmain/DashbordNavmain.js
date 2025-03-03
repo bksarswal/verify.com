@@ -51,7 +51,7 @@ function DashbordNavbar() {
             Dashboard
           </Link>
           <Link
-            to="/withdraw"
+            to="/dashboard/withdraw"
             className="text-[16px] md:text-xl font-bold text-[#252525] hover:text-gray-700"
           >
             Withdraw

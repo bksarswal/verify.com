@@ -4,14 +4,23 @@ const AccountDetailsForm = () => {
   return (
     <div><form className=" space-y-4">
     <div>
-      <label className="block mb-1">Username</label>
-      <input className="w-full p-2 border rounded-lg" placeholder="johndoe123" />
+      <label className="block mb-1">Date of Registraction</label>
+      <input className="w-full p-2 border rounded-lg" type="date" placeholder="01/03/2025" />
     </div>
     <div>
-      <label className="block mb-1">Phone Number</label>
-      <input className="w-full p-2 border rounded-lg" type="tel" placeholder="+1 (555) 123-4567" />
+      <label className="block mb-1">Task completed</label>
+      <input className="w-full p-2 border rounded-lg" type="number" placeholder="0" />
     </div>
-    <button className="w-full bg-blue-500 text-white p-2 rounded-lg">Update Account Details</button>
+    <div>
+      <label className="block mb-1">Life time earning</label>
+      <input className="w-full p-2 border rounded-lg" type="number" placeholder="0.00" />
+    </div>
+    <div>
+      <label className="block mb-1">Total Withdraw</label>
+      <input className="w-full p-2 border rounded-lg" type="number" placeholder="0.00" />
+    </div>
+    
+    
   </form></div>
   )
 }

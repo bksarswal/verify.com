@@ -7,6 +7,7 @@ import AccountDetailsForm from "./AccountDetailsForm";
 import SupportSection from "./SupportSection";
 import ChangePasswordForm from "./ChangePasswordForm";
 import { Link } from "react-router-dom";
+import PaymentDetails from "./PaymentDetails";
 
 const UserProfilePage = () => {
   const [activeTab, setActiveTab] = useState("user-info");
@@ -82,7 +83,7 @@ const renderTabContent = (tab) => {
     case "account-details":
       return <AccountDetailsForm />;
     case "payment":
-      return <p>Payment details section coming soon!</p>;
+      return <PaymentDetails/>;
     case "referrals":
       return <p>Referral section coming soon!</p>;
     case "change-password":
