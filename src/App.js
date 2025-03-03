@@ -19,6 +19,7 @@ import Updateitms from "./Screens/AdminDashbord/Updateitms";
 import UserProfilePage from "./Screens/Dashboard/Profile/Userprofile";
 import WithdrawalPag from "./Screens/Dashboard/Profile/Withdraw/Withdraw";
 
+
 const MainRouter = createBrowserRouter([
   {
     path: "",
@@ -42,6 +43,7 @@ const MainRouter = createBrowserRouter([
       { path: "resetpassword", element: <ResetPassword /> },
       { path: "verifyotp", element: <VerifyOtp /> },
       { path: "logout", element: <Logout /> },
+      
     ],
   },
 
