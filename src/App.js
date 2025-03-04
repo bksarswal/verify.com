@@ -17,7 +17,9 @@ import Adminhome from "./Screens/AdminDashbord/Adminhome";
 import Adminrouter from "./Routing/Adminrouter";
 import Updateitms from "./Screens/AdminDashbord/Updateitms";
 import UserProfilePage from "./Screens/Dashboard/Profile/Userprofile";
-import WithdrawalPag from "./Screens/Dashboard/Profile/Withdraw/Withdraw";
+import WithdrawalPag from "./Screens/Dashboard/Withdraw/Withdraw";
+import ReferralPage from "./Screens/Dashboard/Referral/Referral";
+import TaskHistory from "./Screens/Dashboard/TaskHistory/TaskHistory";
 
 
 const MainRouter = createBrowserRouter([
@@ -59,6 +61,8 @@ const MainRouter = createBrowserRouter([
       { path: "home", element: <DashboardHome /> },
       { path: "profile", element: <UserProfilePage /> },
       { path: "withdraw", element: <WithdrawalPag /> },
+      { path: "referral", element: <ReferralPage /> },
+      { path: "task-history", element: <TaskHistory /> },
     ],
   },
 

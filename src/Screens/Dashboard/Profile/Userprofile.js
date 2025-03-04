@@ -8,6 +8,8 @@ import SupportSection from "./SupportSection";
 import ChangePasswordForm from "./ChangePasswordForm";
 import { Link } from "react-router-dom";
 import PaymentDetails from "./PaymentDetails";
+// import ReferralPage from "../Referral/Referral";
+import ReferralPageProfile from "./Referral";
 
 const UserProfilePage = () => {
   const [activeTab, setActiveTab] = useState("user-info");
@@ -85,7 +87,7 @@ const renderTabContent = (tab) => {
     case "payment":
       return <PaymentDetails/>;
     case "referrals":
-      return <p>Referral section coming soon!</p>;
+      return <ReferralPageProfile/>;
     case "change-password":
       return <ChangePasswordForm />;
     case "support":
