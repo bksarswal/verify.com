@@ -25,7 +25,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && sed -i '/self.__WB_MANIFEST/d' build/service-worker.js"
+,
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
