@@ -14,15 +14,3 @@ root.render(
   </React.StrictMode>
 );
 
-// ✅ Service Worker Register Karne Ka Code
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js")
-      .then((registration) => {
-        console.log("ServiceWorker registered with scope:", registration.scope);
-      })
-      .catch((error) => {
-        console.log("ServiceWorker registration failed:", error);
-      });
-  });
-}
