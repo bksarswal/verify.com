@@ -1,11 +1,18 @@
+/* eslint-disable no-restricted-globals */
+
 const CACHE_NAME = "verify-earn-cache-v1";
 const urlsToCache = ["/", "/index.html", "/manifest.json"];
 
 // Install Service Worker and Cache Files
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
+    caches.open(CACHE_NAME).then(async (cache) => {
+      try {
+        await cache.addAll(urlsToCache);
+        console.log("Assets cached successfully!");
+      } catch (error) {
+        console.error("Failed to cache:", error);
+      }
     })
   );
   self.skipWaiting();
@@ -25,13 +32,16 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
+  self.clients.claim();
 });
 
-// Fetch Requests and Serve from Cache
+// Fetch Requests and Serve from Cache with Network Fallback
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request).catch(() => {
+        return caches.match("/index.html"); // Offline fallback
+      });
     })
   );
 });
