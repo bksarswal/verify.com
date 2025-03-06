@@ -6,17 +6,17 @@ const DashboardHome = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
     const db = getFirestore(app);
-    const taskCollection = collection(db, "datsa"); // 👈 Ensure collection name is correct
+    const taskCollection = collection(db, "datsa"); // Ensure collection name is correct
 
     const unsubscribe = onSnapshot(
       taskCollection,
       (snapshot) => {
-        console.log("Fetching Firestore Data..."); // Debugging log
         const taskList = snapshot.docs.map((doc) => {
-          console.log("Firestore Doc:", doc.data()); // Debugging log
           return {
             id: doc.id,
             ...doc.data(),
@@ -54,7 +54,6 @@ const DashboardHome = () => {
     );
   };
 
-  // ✅ Field names fix kiye hain
   const offlineTasks = [
     { id: "offline1", LinksValue: "http://example1.com", Earinhg: "$3.00", code: "", verified: false },
     { id: "offline2", LinksValue: "http://example2.com", Earinhg: "$4.00", code: "", verified: false },
@@ -63,62 +62,110 @@ const DashboardHome = () => {
     { id: "offline5", LinksValue: "http://example5.com", Earinhg: "$8.00", code: "", verified: false },
   ];
 
-  return (
-    <div className="min-h-screen mt-24 bg-gray-100 py-8">
-      <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-2xl font-semibold text-center mb-4">Task Verification</h2>
+  const allTasks = [...offlineTasks, ...tasks];
 
-        {loading ? (
-          <p className="text-center text-gray-500">Loading tasks...</p>
-        ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
-        ) : (
-          <table className="min-w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-200 shadow-md">
-                <th className="border border-gray-300 px-4 py-2 text-left">Sr. No</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Task</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Earning</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Enter Code</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* ✅ Offline + Firestore Tasks Merge */}
-              {[...offlineTasks, ...tasks].map((task, index) => (
-                <tr key={task.id} className="hover:bg-gray-100">
-                  <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-300 text-blue-500 px-4 py-2">{task.LinksValue}</td>
-                  <td className="border border-gray-300 px-4 py-2">{task.Earinhg}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <input
-                      type="text"
-                      value={task.code}
-                      onChange={(e) => handleCodeChange(task.id, e.target.value)}
-                      className={`w-full border rounded-md px-2 py-1 focus:outline-none ${
-                        task.verified ? "border-green-500" : "border-gray-300"
-                      }`}
-                      placeholder="Enter code"
-                      disabled={task.verified}
-                    />
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {task.verified ? (
-                      <span className="text-green-600 font-bold">Verified</span>
-                    ) : (
-                      <button
-                        onClick={() => handleVerify(task.id)}
-                        className="bg-blue-500 text-white text-center px-4 py-2 rounded-md hover:bg-blue-600 transition"
-                      >
-                        Verify
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+  const indexOfLastTask = currentPage * itemsPerPage;
+  const indexOfFirstTask = indexOfLastTask - itemsPerPage;
+  const currentTasks = allTasks.slice(indexOfFirstTask, indexOfLastTask);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  return (
+    <div className="mt-16 min-h-screen bg-gray-100 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-sm rounded-xl overflow-hidden">
+          <h2 className="text-2xl font-semibold text-center py-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+            Task Verification
+          </h2>
+
+          {loading ? (
+            <p className="text-center text-gray-500 py-6">Loading tasks...</p>
+          ) : error ? (
+            <p className="text-center text-red-500 py-6">{error}</p>
+          ) : (
+            <>
+              {/* Table Container */}
+              <div className="overflow-x-auto p-4">
+                <table className="min-w-full bg-white border-collapse">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Sr. No</th>
+                      <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Task</th>
+                      <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Earning</th>
+                      <th className="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Enter Code</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentTasks.map((task, index) => (
+                      <tr key={task.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">{indexOfFirstTask + index + 1}</td>
+                        <td className="border border-gray-200 px-4 py-3 text-sm text-blue-500 max-w-[150px] truncate">
+                          {task.LinksValue}
+                        </td>
+                        <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">{task.Earinhg}</td>
+                        <td className="border border-gray-200 px-4 py-3 text-sm">
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={task.code}
+                              onChange={(e) => handleCodeChange(task.id, e.target.value)}
+                              className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                task.verified ? "border-green-500 bg-green-50" : "border-gray-300"
+                              }`}
+                              placeholder="Enter code"
+                              disabled={task.verified}
+                            />
+                            {task.verified ? (
+                              <span className="text-green-600 font-semibold">Verified</span>
+                            ) : (
+                              <button
+                                onClick={() => handleVerify(task.id)}
+                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm whitespace-nowrap"
+                              >
+                                Verify
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination Controls */}
+              <div className="flex justify-center py-6 bg-gray-50">
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="mx-1 px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                {Array.from({ length: Math.ceil(allTasks.length / itemsPerPage) }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => paginate(i + 1)}
+                    className={`mx-1 px-4 py-2 rounded-md text-sm font-medium ${
+                      currentPage === i + 1
+                        ? "bg-blue-500 text-white"
+                        : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={currentPage === Math.ceil(allTasks.length / itemsPerPage)}
+                  className="mx-1 px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

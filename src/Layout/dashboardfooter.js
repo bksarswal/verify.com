@@ -3,7 +3,7 @@ import { MapPin, Mail } from 'lucide-react';
 import logo from "../Assetss/imadsdge.png";
 import { Link } from 'react-router-dom';
 
-const Footer = () => {
+const DashboardFooter = () => {
   return (
     <footer className="w-full py-8 bg-[#F2FAFA]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,7 +25,7 @@ const Footer = () => {
               Looking to earn extra income from home? Verify Earn offers flexible opportunities to help you boost your earnings effortlessly.
             </p>
             <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-md transition-colors">
-             <Link to="/about">Learn More.. </Link>
+             <Link to="/dashboard">Back</Link>
             </button>
           </div>
 
@@ -83,4 +83,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default DashboardFooter;

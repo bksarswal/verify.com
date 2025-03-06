@@ -1,13 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import logo from "../Assetss/imadsdge.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Function to determine if a link is active
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
-    <div className="w-full  fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-sm shadow-md">
+    <div className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-sm shadow-md">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
@@ -25,19 +31,31 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-8">
           <Link
             to="/home"
-            className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins"
+            className={`text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
+              isActive("/home")
+                ? "text-[#2196F3] "
+                : "text-[#252525] hover:text-[#2196F3] "
+            }`}
           >
             Home
           </Link>
           <Link
             to="/howitsworks"
-            className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins"
+            className={`text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
+              isActive("/howitsworks")
+                ? "text-[#2196F3] "
+                : "text-[#252525] hover:text-[#2196F3] "
+            }`}
           >
             How it&apos;s Work
           </Link>
           <Link
             to="/about"
-            className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins"
+            className={`text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
+              isActive("/about")
+                ? "text-[#2196F3] "
+                : "text-[#252525] hover:text-[#2196F3] "
+            }`}
           >
             About Us
           </Link>
@@ -118,21 +136,33 @@ export default function Navbar() {
             <div className="flex  bg-[#96f5f5]  min-h-lvh flex-col space-y-6 p-6">
               <Link
                 to="/"
-                className="text-[18px] font-bold font-poppins hover:text-yellow-400 transition-colors"
+                className={`text-[18px] font-bold font-poppins transition-colors ${
+                  isActive("/")
+                    ? "text-[#2196F3]"
+                    : "text-white hover:text-[#2196F3]"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/how-it-works"
-                className="text-[18px] font-bold font-poppins hover:text-yellow-400 transition-colors"
+                className={`text-[18px] font-bold font-poppins transition-colors ${
+                  isActive("/how-it-works")
+                    ? "text-[#2196F3]"
+                    : "text-white hover:text-[#2196F3]"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 How it&apos;s Work
               </Link>
               <Link
                 to="/about"
-                className="text-[18px] font-bold font-poppins hover:text-yellow-400 transition-colors"
+                className={`text-[18px] font-bold font-poppins transition-colors ${
+                  isActive("/about")
+                    ? "text-[#2196F3]"
+                    : "text-white hover:text-[#2196F3]"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 About Us
