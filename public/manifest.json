@@ -3,17 +3,17 @@
   "name": "Verify Earn PWA",
   "icons": [
     {
-      "src": "imadsdge.png",
+      "src": "/imadsdge.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "imadsdge.png",
+      "src": "/imadsdge.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "imadsdge.png",
+      "src": "/imadsdge.png",
       "type": "image/png",
       "sizes": "512x512"
     }
