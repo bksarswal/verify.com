@@ -24,7 +24,7 @@ import TaskHistory from "./Screens/Dashboard/TaskHistory/TaskHistory";
 
 const MainRouter = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <AllRouter />,
     children: [
       { path: "", element: <Home /> },
