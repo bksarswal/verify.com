@@ -1,0 +1,15 @@
+{
+    "redirects": [
+      {
+        "source": "/contact",
+        "destination": "/",
+        "status": 301
+      },
+      {
+        "source": "/about",
+        "destination": "/",
+        "status": 301
+      }
+    ]
+  }
+  
