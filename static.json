@@ -1,15 +1,14 @@
 {
-    "redirects": [
-      {
-        "source": "/contact",
-        "destination": "/",
-        "status": 301
-      },
-      {
-        "source": "/about",
-        "destination": "/",
-        "status": 301
-      }
-    ]
-  }
-  
+  "redirects": [
+    {
+      "source": "/howitsworks",
+      "destination": "/",
+      "status": 301
+    },
+    {
+      "source": "/about",
+      "destination": "/",
+      "status": 301
+    }
+  ]
+}
