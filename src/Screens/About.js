@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -94,12 +95,12 @@ const About = () => {
             <div className="text-center pt-8">
               <p className="mb-2 text-lg sm:text-xl">
                 Ready to get started?{" "}
-                <a
-                  href="#"
-                  className="text-[#2196F3] hover:text-[#1976D2] font-semibold"
+                <Link
+                  to={"/signup"}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg "
                 >
                   Sign Up Now
-                </a>
+                </Link>
               </p>
               <p className="text-gray-800">and begin earning today!</p>
             </div>

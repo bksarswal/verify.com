@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="w-full py-8 bg-[#F2FAFA]">
+    <footer className="w-full py-8 bg-[#78dbdb]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-1  md:grid-cols-3 gap-8">
@@ -62,10 +62,10 @@ const Footer = () => {
               <div className="flex items-center space-x-2 text-gray-600">
                 <Mail className="h-5 w-5" />
                 <a
-                  href="mailto:shreemalttech@yahoo.com"
+                  href="mailto:VerifyEarn@yahoo.com"
                   className="hover:text-gray-900 text-sm sm:text-base"
                 >
-                  shreemalttech@yahoo.com
+                  VerifyEarn@yahoo.com
                 </a>
               </div>
             </div>
@@ -75,7 +75,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="mt-8 pt-4 border-t border-gray-200">
           <p className="text-center text-gray-500 text-xs sm:text-sm">
-            © 2024 Shreemal Technology. All rights reserved.
+            © 2025 VerifyEarn. All rights reserved.
           </p>
         </div>
       </div>

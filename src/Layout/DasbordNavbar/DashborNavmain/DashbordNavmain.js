@@ -1,13 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Bell, CircleUserRound } from "lucide-react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import app from "../../../Config/firebaseConfig"; // Adjust the import based on your Firebase setup
 import accountBalanceWalletIcon from "../DashborNavmain/account-balance-wallet-55dp-000000-fill0-wght400-grad0-opsz48-1.png";
 import logoImage from "../DashborNavmain/imadsdge-1.png";
 
 function DashbordNavbar() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isNotificationOpen, setNotificationOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const location = useLocation(); // Get current route location
+
+  const auth = getAuth(app);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, fetch the email
+        setUserEmail(user.email);
+      } else {
+        // User is signed out
+        setUserEmail("");
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [auth]);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -22,20 +42,30 @@ function DashbordNavbar() {
     return location.pathname === path;
   };
 
+  // Function to get the first two letters of the email
+  const getInitials = (email) => {
+    if (!email) return "";
+    const parts = email.split("@");
+    const username = parts[0];
+    return username.slice(0, 2).toUpperCase();
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 w-full z-50 mx-auto flex items-center justify-between px-6 py-3 bg-white shadow-sm">
         {/* Logo and Brand Name */}
-        <Link to="/dashboard"><div className="flex items-center">
-          <img
-            className="w-[60px] h-[60px] object-cover mr-3 md:mr-4"
-            alt="Logo"
-            src={logoImage}
-          />
-          <h1 className="text-[24px] md:text-[32px] lg:text-[40px] font-semibold text-black">
-            Verify Earn
-          </h1>
-        </div></Link>
+        <Link to="/dashboard">
+          <div className="flex items-center">
+            <img
+              className="w-[60px] h-[60px] object-cover mr-3 md:mr-4"
+              alt="Logo"
+              src={logoImage}
+            />
+            <h1 className="text-[24px] md:text-[32px] lg:text-[40px] font-semibold text-black">
+              Verify Earn
+            </h1>
+          </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
@@ -108,12 +138,20 @@ function DashbordNavbar() {
               </div>
             )}
           </button>
+          <button  className="hover:text-blue-500 ">
           <Link
             to="/dashboard/profile"
-            className="hover:text-blue-500"
+           
           >
-            <CircleUserRound size={44} />
+            {userEmail ? (
+              <div className="w-12 h-12 flex items-center bg-blue-100 justify-center border-4 border-black  rounded-full text-xl  font-bold">
+                {getInitials(userEmail)}
+              </div>
+            ) : (
+              <CircleUserRound size={44} />
+            )}
           </Link>
+          </button>
         </div>
 
         {/* Mobile Menu Button */}

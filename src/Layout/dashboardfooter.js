@@ -25,7 +25,7 @@ const DashboardFooter = () => {
               Looking to earn extra income from home? Verify Earn offers flexible opportunities to help you boost your earnings effortlessly.
             </p>
             <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-md transition-colors">
-             <Link to="/dashboard">Back</Link>
+             <Link to="/dashboard">Dashboard</Link>
             </button>
           </div>
 
@@ -34,19 +34,19 @@ const DashboardFooter = () => {
             <h3 className="text-lg font-semibold text-black">Disclaimer</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
-                  About Us
-                </a>
+                <Link to={"/dashboard"}className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+                  Dashboard
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+                <Link to={"#"}className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+                <Link to={"#"}className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -61,12 +61,12 @@ const DashboardFooter = () => {
               </div>
               <div className="flex items-center space-x-2 text-gray-600">
                 <Mail className="h-5 w-5" />
-                <a
-                  href="mailto:shreemalttech@yahoo.com"
+                <Link
+                  to="mailto:VerifiEarn@yahoo.com"
                   className="hover:text-gray-900 text-sm sm:text-base"
                 >
-                  shreemalttech@yahoo.com
-                </a>
+                  VerifyEarn@yahoo.com
+                </Link>
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@ const DashboardFooter = () => {
         {/* Copyright */}
         <div className="mt-8 pt-4 border-t border-gray-200">
           <p className="text-center text-gray-500 text-xs sm:text-sm">
-            © 2024 Shreemal Technology. All rights reserved.
+            © 2025 VerifyEarn. All rights reserved.
           </p>
         </div>
       </div>

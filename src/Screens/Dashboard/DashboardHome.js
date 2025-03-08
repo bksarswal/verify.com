@@ -54,19 +54,9 @@ const DashboardHome = () => {
     );
   };
 
-  const offlineTasks = [
-    { id: "offline1", LinksValue: "http://example1.com", Earinhg: "$3.00", code: "", verified: false },
-    { id: "offline2", LinksValue: "http://example2.com", Earinhg: "$4.00", code: "", verified: false },
-    { id: "offline3", LinksValue: "http://example3.com", Earinhg: "$6.00", code: "", verified: false },
-    { id: "offline4", LinksValue: "http://example4.com", Earinhg: "$7.00", code: "", verified: false },
-    { id: "offline5", LinksValue: "http://example5.com", Earinhg: "$8.00", code: "", verified: false },
-  ];
-
-  const allTasks = [...offlineTasks, ...tasks];
-
   const indexOfLastTask = currentPage * itemsPerPage;
   const indexOfFirstTask = indexOfLastTask - itemsPerPage;
-  const currentTasks = allTasks.slice(indexOfFirstTask, indexOfLastTask);
+  const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -84,7 +74,6 @@ const DashboardHome = () => {
             <p className="text-center text-red-500 py-6">{error}</p>
           ) : (
             <>
-              {/* Table Container */}
               <div className="overflow-x-auto p-4">
                 <table className="min-w-full bg-white border-collapse">
                   <thead>
@@ -133,7 +122,6 @@ const DashboardHome = () => {
                 </table>
               </div>
 
-              {/* Pagination Controls */}
               <div className="flex justify-center py-6 bg-gray-50">
                 <button
                   onClick={() => paginate(currentPage - 1)}
@@ -142,7 +130,7 @@ const DashboardHome = () => {
                 >
                   Previous
                 </button>
-                {Array.from({ length: Math.ceil(allTasks.length / itemsPerPage) }, (_, i) => (
+                {Array.from({ length: Math.ceil(tasks.length / itemsPerPage) }, (_, i) => (
                   <button
                     key={i + 1}
                     onClick={() => paginate(i + 1)}
@@ -157,7 +145,7 @@ const DashboardHome = () => {
                 ))}
                 <button
                   onClick={() => paginate(currentPage + 1)}
-                  disabled={currentPage === Math.ceil(allTasks.length / itemsPerPage)}
+                  disabled={currentPage === Math.ceil(tasks.length / itemsPerPage)}
                   className="mx-1 px-4 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
