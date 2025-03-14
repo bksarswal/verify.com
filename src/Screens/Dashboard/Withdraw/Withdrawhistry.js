@@ -3,7 +3,12 @@ import { useState } from "react";
 export default function WithdrawalHistory() {
   const [withdrawals, setWithdrawals] = useState([
     { id: 1, method: "UPI", date: "2025-03-04 10:30 AM", amount: 1000 },
-    { id: 2, method: "Bank", date: "2025-03-03 02:15 PM", amount: 2000 },
+    { id: 2, method: "UPI", date: "2025-03-03 02:15 PM", amount: 2000 },
+    { id: 2, method: "UPI", date: "2025-03-03 02:15 PM", amount: 2000 },
+    { id: 2, method: "UPI", date: "2025-03-03 02:15 PM", amount: 2000 },
+    { id: 2, method: "UPI", date: "2025-03-03 02:15 PM", amount: 2000 },
+    { id: 2, method: "UPI", date: "2025-03-03 02:15 PM", amount: 2000 },
+    { id: 2, method: "UPI", date: "2025-03-03 02:15 PM", amount: 2000 },
   ]);
 
   return (
