@@ -129,64 +129,57 @@ export default function Navbar() {
 
           {/* Sidebar */}
           <div
-            className={`fixed top-0 right-0 w-64 h-full bg-gradient-to-b  text-white shadow-lg z-50 transform transition-transform duration-300 ${
-              isMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
-          >
-            <div className="flex  bg-[#96f5f5]  min-h-lvh flex-col space-y-6 p-6">
-              <Link
-                to="/"
-                className={`text-[18px] font-bold font-poppins transition-colors ${
-                  isActive("/")
-                    ? "text-[#2196F3]"
-                    : "text-white hover:text-[#2196F3]"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                to="/how-it-works"
-                className={`text-[18px] font-bold font-poppins transition-colors ${
-                  isActive("/how-it-works")
-                    ? "text-[#2196F3]"
-                    : "text-white hover:text-[#2196F3]"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                How it&apos;s Work
-              </Link>
-              <Link
-                to="/about"
-                className={`text-[18px] font-bold font-poppins transition-colors ${
-                  isActive("/about")
-                    ? "text-[#2196F3]"
-                    : "text-white hover:text-[#2196F3]"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About Us
-              </Link>
-              <button
-                className="bg-white text-[#2196F3] hover:bg-gray-100 rounded-full px-6 py-2 font-semibold"
-                onClick={() => {
-                  navigate("/signin");
-                  setIsMenuOpen(false);
-                }}
-              >
-                Sign in
-              </button>
-              <button
-                className="bg-white text-[#2196F3] hover:bg-gray-100 rounded-full px-6 py-2 font-semibold"
-                onClick={() => {
-                  navigate("/signup");
-                  setIsMenuOpen(false);
-                }}
-              >
-                Sign up
-              </button>
-            </div>
-          </div>
+  className={`fixed top-0 right-0 w-64 h-full bg-gradient-to-b from-blue-500 to-cyan-500 text-white shadow-lg z-50 transform transition-transform duration-300 ${
+    isMenuOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+>
+  <div className="flex min-h-lvh flex-col space-y-6 p-6 bg-[#96f5f5]">
+    <Link
+      to="/"
+      className={`text-[18px] font-bold font-poppins px-4 py-2 rounded-md transition-colors ${
+        isActive("/") ? "text-[#2196F3]" : "text-white hover:text-[#2196F3]"
+      }`}
+      onClick={() => setIsMenuOpen(false)}
+    >
+      Home
+    </Link>
+    <Link
+      to="/how-it-works"
+      className={`text-[18px] font-bold font-poppins px-4 py-2 rounded-md transition-colors ${
+        isActive("/how-it-works")
+          ? "text-[#2196F3]"
+          : "text-white hover:text-[#2196F3]"
+      }`}
+      onClick={() => setIsMenuOpen(false)}
+    >
+      How it Works
+    </Link>
+    <Link
+      to="/about"
+      className={`text-[18px] font-bold font-poppins px-4 py-2 rounded-md transition-colors ${
+        isActive("/about") ? "text-[#2196F3]" : "text-white hover:text-[#2196F3]"
+      }`}
+      onClick={() => setIsMenuOpen(false)}
+    >
+      About Us
+    </Link>
+    <Link
+      to="/signin"
+      className="text-[#2196F3] bg-white px-4 py-2 rounded-md text-center hover:bg-gray-100 transition"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      Sign in
+    </Link>
+    <Link
+      to="/signup"
+      className="text-[#2196F3] bg-white px-4 py-2 rounded-md text-center hover:bg-gray-100 transition"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      Sign up
+    </Link>
+  </div>
+</div>
+
         </>
       )}
     </div>

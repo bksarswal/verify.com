@@ -17,6 +17,8 @@
     "react-icons": "^5.4.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.3.0",
+    "react-select": "^5.10.1",
+    "react-select-country-list": "^2.2.3",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
     "tailwind-merge": "^2.1.0",
