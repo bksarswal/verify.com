@@ -13,6 +13,9 @@ const Signup = () => {
   const db = getFirestore(app);
 
   const usernameRef = useRef();
+  const firstnameRef = useRef();
+  const middlenameRef = useRef();
+  const lastnameRef = useRef();
   const emailRef = useRef();
   const phoneRef = useRef();
   const dobRef = useRef();
@@ -58,6 +61,9 @@ const Signup = () => {
     setIsSubmitting(true);
 
     const formData = {
+      firstname :firstnameRef.current.value,
+      middlename:middlenameRef.current.value,
+      lastname:lastnameRef.current.value,
       username: usernameRef.current.value,
       email: emailRef.current.value,
       phone: phoneRef.current.value,
@@ -107,6 +113,12 @@ const Signup = () => {
       <div className="max-w-md w-full rounded-2xl bg-[#9ad6d6] p-8 shadow-lg">
         <h2 className="text-3xl font-bold text-center mb-6">Signup</h2>
         <form onSubmit={handleSubmit} className="space-y-4 ">
+          <input type="text" ref={firstnameRef} placeholder="Firstname" className="w-full px-4 py-1 border rounded-xl" />
+          {errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
+          <input type="text" ref={middlenameRef} placeholder="Middle Name(optional)" className="w-full px-4 py-1 border rounded-xl" />
+          
+          <input type="text" ref={lastnameRef} placeholder="Last name" className="w-full px-4 py-1 border rounded-xl" />
+          {errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
           <input type="text" ref={usernameRef} placeholder="Username" className="w-full px-4 py-1 border rounded-xl" />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
