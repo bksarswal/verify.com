@@ -6,7 +6,7 @@ import app from '../../../Config/firebaseConfig';
 const UserInfoForm = () => {
   const [userInfo, setUserInfo] = useState({
     firstname: '',
-    middlename: '', // Fixed spelling mistake
+    middlename: '',
     lastname: '',
     fullName: '',
     username: '',
@@ -92,7 +92,11 @@ const UserInfoForm = () => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
+    setUserInfo((prevInfo) => {
+      const updatedInfo = { ...prevInfo, [name]: value };
+      setIsEditing(true);  // Ensure Edit Mode is Active
+      return updatedInfo;
+    });
 
     if (name === 'country') {
       const selectedCountry = countries.find((c) => c.name === value);
@@ -117,11 +121,10 @@ const UserInfoForm = () => {
     }
   };
 
-  // Check if form is valid before enabling the Save button
+  // Fix for Save Button Not Enabling
   const isFormValid = () => {
-    return Object.values(userInfo).every((field) => typeof field === 'string' && field.trim() !== '');
+    return Object.keys(userInfo).some((key) => key !== "middlename" && userInfo[key]?.trim() !== "");
   };
-  
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center text-red-500">{error}</div>;
@@ -149,33 +152,31 @@ const UserInfoForm = () => {
           />
         </div>
         <input
-            name="firstname"
-            value={userInfo.firstname}
-            disabled={!isEditing}
-            onChange={handleChange}
-            required
-            placeholder="First Name"
-            className="w-full p-2 border rounded-lg "
-          />
-           <input
-            name="middlename"
-            value={userInfo.middlename}
-            disabled= {!isEditing}
-            onChange={handleChange}
-            
-            placeholder="Middle Name"
-            className="w-full p-2 border rounded-lg "
-          />
-           <input
-            name="lastname"
-            value={userInfo.lastname}
-            disabled={!isEditing}
-            onChange={handleChange}
-            required
-            placeholder="Last Name"
-            className="w-full p-2 border rounded-lg "
-          />
-     
+          name="firstname"
+          value={userInfo.firstname}
+          disabled={!isEditing}
+          onChange={handleChange}
+          required
+          placeholder="First Name"
+          className="w-full p-2 border rounded-lg"
+        />
+        <input
+          name="middlename"
+          value={userInfo.middlename}
+          disabled={!isEditing}
+          onChange={handleChange}
+          placeholder="Middle Name"
+          className="w-full p-2 border rounded-lg"
+        />
+        <input
+          name="lastname"
+          value={userInfo.lastname}
+          disabled={!isEditing}
+          onChange={handleChange}
+          required
+          placeholder="Last Name"
+          className="w-full p-2 border rounded-lg"
+        />
         <input
           name="phone"
           value={userInfo.phone}
