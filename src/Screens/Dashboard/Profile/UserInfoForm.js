@@ -5,12 +5,8 @@ import app from '../../../Config/firebaseConfig';
 
 const UserInfoForm = () => {
   const [userInfo, setUserInfo] = useState({
-    firstname: '',
-    middlename: '',
-    lastname: '',
-    fullName: '',
-    username: '',
-    phone: '',
+    name: '',
+    mobile: '',
     email: '',
     dob: '',
     country: '',
@@ -26,7 +22,6 @@ const UserInfoForm = () => {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Fetch country and state data
   useEffect(() => {
     fetch("https://countriesnow.space/api/v0.1/countries/states")
       .then((response) => response.json())
@@ -40,12 +35,10 @@ const UserInfoForm = () => {
       .catch((error) => console.error("Error fetching countries:", error));
   }, []);
 
-  // Fetch user data when authenticated
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = auth.currentUser;
-        if (user) {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
           const docRef = doc(db, 'users', user.uid);
           const docSnap = await getDoc(docRef);
 
@@ -58,17 +51,11 @@ const UserInfoForm = () => {
               setStates(selectedCountry.states);
             }
           }
+        } catch (err) {
+          setError('Failed to fetch user data.');
+        } finally {
+          setIsLoading(false);
         }
-      } catch {
-        setError('Failed to fetch user data.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchUserData();
       } else {
         setError('User not authenticated.');
         setIsLoading(false);
@@ -76,25 +63,13 @@ const UserInfoForm = () => {
     });
 
     return () => unsubscribe();
-  }, [auth, db, countries]);
+  }, [db, countries]);
 
-  // Auto-update Full Name
-  useEffect(() => {
-    setUserInfo((prevInfo) => ({
-      ...prevInfo,
-      fullName: 
-        (prevInfo.firstname ? prevInfo.firstname + ' ' : '') +
-        (prevInfo.middlename ? prevInfo.middlename + ' ' : '') +
-        (prevInfo.lastname || ''),
-    }));
-  }, [userInfo.firstname, userInfo.middlename, userInfo.lastname]);
-
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo((prevInfo) => {
       const updatedInfo = { ...prevInfo, [name]: value };
-      setIsEditing(true);  // Ensure Edit Mode is Active
+      setIsEditing(true);
       return updatedInfo;
     });
 
@@ -105,25 +80,19 @@ const UserInfoForm = () => {
     }
   };
 
-  // Save user data to Firestore
   const handleSave = async () => {
     try {
       const user = auth.currentUser;
       if (!user) throw new Error('User not authenticated');
       
       const docRef = doc(db, 'users', user.uid);
-      await setDoc(docRef, userInfo);
-      
+      await setDoc(docRef, userInfo, { merge: true });
+
       setSuccess('User information saved successfully!');
       setIsEditing(false);
     } catch (err) {
       setError(err.message || 'Failed to save user data.');
     }
-  };
-
-  // Fix for Save Button Not Enabling
-  const isFormValid = () => {
-    return Object.keys(userInfo).some((key) => key !== "middlename" && userInfo[key]?.trim() !== "");
   };
 
   if (isLoading) return <div className="text-center">Loading...</div>;
@@ -132,58 +101,22 @@ const UserInfoForm = () => {
   return (
     <div>
       <form className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            name="username"
-            value={userInfo.username}
-            onChange={handleChange}
-            disabled={!isEditing}
-            required
-            placeholder="Username"
-            className="w-full p-2 border rounded-lg"
-          />
-          <input
-            name="fullName"
-            value={userInfo.fullName}
-            disabled
-            required
-            placeholder="Full Name"
-            className="w-full p-2 border rounded-lg bg-gray-100"
-          />
-        </div>
         <input
-          name="firstname"
-          value={userInfo.firstname}
-          disabled={!isEditing}
-          onChange={handleChange}
-          required
-          placeholder="First Name"
-          className="w-full p-2 border rounded-lg"
-        />
-        <input
-          name="middlename"
-          value={userInfo.middlename}
-          disabled={!isEditing}
-          onChange={handleChange}
-          placeholder="Middle Name"
-          className="w-full p-2 border rounded-lg"
-        />
-        <input
-          name="lastname"
-          value={userInfo.lastname}
-          disabled={!isEditing}
-          onChange={handleChange}
-          required
-          placeholder="Last Name"
-          className="w-full p-2 border rounded-lg"
-        />
-        <input
-          name="phone"
-          value={userInfo.phone}
+          name="name"
+          value={userInfo.name} // Fixed 'username' to 'name'
           onChange={handleChange}
           disabled={!isEditing}
           required
-          placeholder="Phone No."
+          placeholder="Username"
+          className="w-full p-2 border rounded-lg"
+        />
+        <input
+          name="mobile"
+          value={userInfo.mobile}
+          onChange={handleChange}
+          disabled={!isEditing}
+          required
+          placeholder="Mobile No."
           className="w-full p-2 border rounded-lg"
         />
         <input
@@ -243,9 +176,8 @@ const UserInfoForm = () => {
         ) : (
           <button
             type="button"
-            className={`w-full bg-blue-500 text-white p-2 rounded-lg ${!isFormValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className="w-full bg-blue-500 text-white p-2 rounded-lg"
             onClick={handleSave}
-            disabled={!isFormValid()}
           >
             Save
           </button>

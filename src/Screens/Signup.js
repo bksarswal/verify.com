@@ -1,85 +1,46 @@
-
-
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import app from '../Config/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import app from "../Config/firebaseConfig";
 
 const Signup = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  const usernameRef = useRef();
-  const firstnameRef = useRef();
-  const middlenameRef = useRef();
-  const lastnameRef = useRef();
-  const emailRef = useRef();
-  const phoneRef = useRef();
-  const dobRef = useRef();
-  const genderRef = useRef();
-  const addressRef = useRef();
-  const passwordRef = useRef();
-
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedState, setSelectedState] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Fetch countries and states
-  useEffect(() => {
-    fetch("https://countriesnow.space/api/v0.1/countries/states")
-      .then((response) => response.json())
-      .then((data) => {
-        const countryList = data.data.map((country) => ({
-          label: country.name,
-          value: country.name,
-          states: country.states.map((state) => ({
-            label: state.name,
-            value: state.name,
-          })),
-        }));
-        setCountries(countryList);
-      })
-      .catch((error) => console.error("Error fetching countries:", error));
-  }, []);
-
-  // Handle country selection
-  const handleCountryChange = (selected) => {
-    setSelectedCountry(selected);
-    setStates(selected?.states || []);
-    setSelectedState(null);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formData = {
-      firstname :firstnameRef.current.value,
-      middlename:middlenameRef.current.value,
-      lastname:lastnameRef.current.value,
-      username: usernameRef.current.value,
-      email: emailRef.current.value,
-      phone: phoneRef.current.value,
-      dob: dobRef.current.value,
-      gender: genderRef.current.value,
-      address: addressRef.current.value,
-      country: selectedCountry?.value || "",
-      state: selectedState?.value || "",
-      password: passwordRef.current.value
-    };
-
-    // Validate form fields
     const newErrors = {};
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) newErrors[key] = `*${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
-    });
+    if (!formData.name) newErrors.name = "*Name is required";
+    if (!formData.email) newErrors.email = "*Email is required";
+    if (!formData.mobile) newErrors.mobile = "*Mobile is required";
+    if (!formData.password) newErrors.password = "*Password is required";
+    if (!formData.confirmPassword) newErrors.confirmPassword = "*Confirm Password is required";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "*Passwords do not match";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -88,91 +49,66 @@ const Signup = () => {
     }
 
     try {
-      // Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
-      // Save user details in Firestore
+      // Save user data to Firestore
       await setDoc(doc(db, "users", user.uid), {
-        ...formData,
-        uid: user.uid,
-        createdAt: new Date()
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.mobile,
+        uid: user.uid, // Store UID for reference
+        createdAt: new Date(),
       });
 
-      alert('Signup successful');
-      navigate('/signin');
+      alert("User signed up successfully!");
+      navigate("/dashboard"); // Redirect to user info page
     } catch (error) {
-      setErrors({ auth: `*${error.message}` });
+      alert(error.message);
+      setErrors({ auth: "*An error occurred. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className=" mt-16 min-h-screen flex items-center  bg-white justify-center py-12 px-4 ">
-      <div className="max-w-md w-full rounded-2xl bg-[#9ad6d6] p-8 shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6">Signup</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 ">
-          <input type="text" ref={firstnameRef} placeholder="Firstname" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
-          <input type="text" ref={middlenameRef} placeholder="Middle Name(optional)" className="w-full px-4 py-1 border rounded-xl" />
-          
-          <input type="text" ref={lastnameRef} placeholder="Last name" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
-          <input type="text" ref={usernameRef} placeholder="Username" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+    <div className="min-h-screen mt-14 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full rounded-[30px] bg-[#F2FAFA] px-8 relative">
+        <h2 className="text-[36px] font-bold text-center mb-2 font-poppins">Signup</h2>
 
-          <input type="email" ref={emailRef} placeholder="Email" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-
-          <input type="text" ref={phoneRef} placeholder="Phone Number" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
-
-          <input type="date" ref={dobRef} className="w-full px-4 py-1 border rounded-xl" />
-          {errors.dob && <p className="text-red-500 text-sm">{errors.dob}</p>}
-
-          <select ref={genderRef} className="w-full px-4 py-1 border rounded-xl">
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-          {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
-
-          <input type="text" ref={addressRef} placeholder="Address" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
-
-          <Select
-            options={countries}
-            value={selectedCountry}
-            onChange={handleCountryChange}
-            placeholder="Select Country"
-            className="w-full"
-          />
-          {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
-
-          <Select
-            options={states}
-            value={selectedState}
-            onChange={setSelectedState}
-            placeholder="Select State"
-            isDisabled={!selectedCountry}
-            className="w-full"
-          />
-          {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
-
-          <input type="password" ref={passwordRef} placeholder="Password" className="w-full px-4 py-1 border rounded-xl" />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-
-          {errors.auth && <p className="text-red-500 text-sm">{errors.auth}</p>}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-blue-500 text-white py-1 rounded-xl hover:bg-blue-600 transition"
-          >
-            {isSubmitting ? 'Signing up...' : 'Signup'}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Name" />
+            {errors.name && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.name}</p>}
+          </div>
+          <div>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Email" />
+            {errors.email && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.email}</p>}
+          </div>
+          <div>
+            <input type="tel" name="mobile" value={formData.mobile} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Mobile" />
+            {errors.mobile && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.mobile}</p>}
+          </div>
+          <div className="relative">
+            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Password" />
+            <span className="absolute right-3 top-3 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+            {errors.password && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.password}</p>}
+          </div>
+          <div className="relative">
+            <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Confirm Password" />
+            <span className="absolute right-3 top-3 cursor-pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+              {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.confirmPassword}</p>}
+          </div>
+          <button type="submit" disabled={isSubmitting} className="w-full bg-[#2196F3] text-white py-2 rounded-xl hover:bg-[#1976D2] focus:outline-none focus:ring-2 focus:ring-[#2196F3] focus:ring-offset-2 disabled:opacity-50 transition-colors font-poppins text-[18px]">
+            {isSubmitting ? "Signing up..." : "Signup"}
           </button>
+          <div className="text-center font-poppins">
+            Already have an account? <a href="/signin" className="text-[#2196F3] hover:text-[#1976D2]">Signin</a>
+          </div>
         </form>
       </div>
     </div>
@@ -180,5 +116,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-

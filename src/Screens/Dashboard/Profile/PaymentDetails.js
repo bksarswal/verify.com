@@ -1,116 +1,164 @@
 import React, { useState, useEffect } from "react";
-import app from "../../../Config/firebaseConfig"; // ✅ Firebase Import
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import app from "../../../Config/firebaseConfig";
+import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const auth = getAuth(app); // ✅ Firebase Auth Initialize
-const db = getFirestore(app); // ✅ Firestore Initialize
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const bankSuggestions = ["State Bank of India", "HDFC Bank", "ICICI Bank", "RMGB Bank", "Axis Bank", "Punjab National Bank", "Bank of Baroda"];
 
 const PaymentDetails = () => {
-  const [walletBalance] = useState("$1.00"); // Read-only balance
-  const [paymentMethod] = useState("UPI"); // Read-only Payment Method
-  const [upiId, setUpiId] = useState(""); // Firebase se data ayega
-  const [isEditing, setIsEditing] = useState(false); // Edit mode check
-  const [userId, setUserId] = useState(null); // ✅ Logged-in User ID
-  const [error, setError] = useState(""); // ✅ UPI ID Error Message
+  const [userId, setUserId] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("UPI");
+  const [upiId, setUpiId] = useState("");
+  const [bankDetails, setBankDetails] = useState({ accountNumber: "", confirmAccountNumber: "", ifsc: "", bankName: "", accountHolder: "" });
+  const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState("");
+  const [showAccountNumber, setShowAccountNumber] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserId(user.uid); // ✅ Firebase Auth se User ID
-        fetchUpiId(user.uid); // ✅ User ki UPI ID Fetch
+        setUserId(user.uid);
+        fetchPaymentDetails(user.uid);
       }
     });
-
-    return () => unsubscribe(); // Clean up on unmount
+    return () => unsubscribe();
   }, []);
 
-  const fetchUpiId = async (uid) => {
+  const fetchPaymentDetails = async (uid) => {
     try {
-      const docRef = doc(db, "users", uid); // 🔥 Unique User ID
+      const docRef = doc(db, "users", uid);
       const docSnap = await getDoc(docRef);
-
       if (docSnap.exists()) {
-        setUpiId(docSnap.data().upiId);
+        const data = docSnap.data();
+        setUpiId(data.upiId || "");
+        setBankDetails({
+          accountNumber: data.accountNumber || "",
+          confirmAccountNumber: "",
+          ifsc: data.ifsc || "",
+          bankName: data.bankName || "",
+          accountHolder: data.accountHolder || "",
+        });
       }
     } catch (error) {
-      console.error("Error fetching UPI ID:", error);
+      console.error("Error fetching payment details:", error);
     }
-  };
-
-  // ✅ Validate UPI ID Before Saving
-  const validateUpiId = (id) => {
-    const upiRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z]+$/; // Example: `example@upi`
-    if (id.length < 5) return "UPI ID should be at least 5 characters.";
-    if (!upiRegex.test(id)) return "Invalid UPI ID format. Example: example@upi";
-    return "";
   };
 
   const handleSave = async () => {
-    if (!userId) return; // Agar user login nahi hai, to return
-
-    const validationError = validateUpiId(upiId);
-    if (validationError) {
-      setError(validationError);
+    if (!userId) return;
+    if (bankDetails.accountNumber !== bankDetails.confirmAccountNumber) {
+      setError("Account numbers do not match.");
       return;
     }
-
     try {
-      const docRef = doc(db, "users", userId); // 🔥 Firebase me save/update hoga
-      await setDoc(docRef, { upiId }, { merge: true }); // Merge use kiya taaki overwrite na ho
+      const docRef = doc(db, "users", userId);
+      await setDoc(
+        docRef,
+        paymentMethod === "UPI"
+          ? { upiId }
+          : { accountNumber: bankDetails.accountNumber, ifsc: bankDetails.ifsc, bankName: bankDetails.bankName, accountHolder: bankDetails.accountHolder },
+        { merge: true }
+      );
       setIsEditing(false);
-      setError(""); // ✅ Error Clear
+      setError("");
     } catch (error) {
-      console.error("Error saving UPI ID:", error);
+      console.error("Error saving payment details:", error);
     }
   };
 
   return (
-    <div>
-      <form className="space-y-4">
-        <div>
-          <label className="block mb-1">Wallet Balance</label>
-          <input className="w-full p-2 border rounded-lg" type="text" readOnly value={walletBalance} />
-        </div>
+    <div className="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-4">Payment Details</h2>
 
-        <div>
-          <label className="block mb-1">Payment Method</label>
-          <input className="w-full p-2 border rounded-lg" type="text" readOnly value={paymentMethod} />
-        </div>
+      <label className="block mb-1">Payment Method</label>
+      <select
+        className="w-full p-2 border rounded-lg"
+        value={paymentMethod}
+        onChange={(e) => setPaymentMethod(e.target.value)}
+      >
+        <option value="UPI">UPI</option>
+        <option value="Bank">Bank Transfer</option>
+      </select>
 
-        <div>
+      {paymentMethod === "UPI" ? (
+        <div className="mt-4">
           <label className="block mb-1">UPI ID</label>
           <input
             className="w-full p-2 border rounded-lg"
             type="text"
             value={upiId}
-            onChange={(e) => {
-              setUpiId(e.target.value);
-              setError(""); // ✅ Error Clear While Typing
-            }}
-            readOnly={!isEditing} // Edit tabhi hoga jab edit mode ON hoga
+            onChange={(e) => setUpiId(e.target.value)}
           />
-          {error && <p className="text-red-500 text-sm mt-1">{error}</p>} {/* ✅ Error Message */}
         </div>
+      ) : (
+        <div className="mt-4">
+          <label className="block mb-1">Account Holder Name</label>
+          <input
+            className="w-full p-2 border rounded-lg"
+            type="text"
+            value={bankDetails.accountHolder}
+            onChange={(e) => setBankDetails({ ...bankDetails, accountHolder: e.target.value })}
+          />
 
-        {isEditing ? (
-          <button
-            className="w-full bg-green-500 text-white p-2 rounded-lg"
-            type="button"
-            onClick={handleSave}
+          <label className="block mb-1 mt-2">Bank Name</label>
+          <select
+            className="w-full p-2 border rounded-lg"
+            value={bankDetails.bankName}
+            onChange={(e) => setBankDetails({ ...bankDetails, bankName: e.target.value })}
           >
-            Save UPI ID
-          </button>
-        ) : (
-          <button
-            className="w-full bg-blue-500 text-white p-2 rounded-lg"
-            type="button"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit UPI ID
-          </button>
-        )}
-      </form>
+            <option value="">Select Bank</option>
+            {bankSuggestions.map((bank, index) => (
+              <option key={index} value={bank}>{bank}</option>
+            ))}
+          </select>
+
+          <label className="block mb-1 mt-2">Account Number</label>
+          <div className="relative">
+            <input
+              className="w-full p-2 border rounded-lg"
+              type={showAccountNumber ? "text" : "password"}
+              value={bankDetails.accountNumber}
+              onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-3 flex items-center"
+              onClick={() => setShowAccountNumber(!showAccountNumber)}
+            >
+              {showAccountNumber ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+
+          <label className="block mb-1 mt-2">Confirm Account Number</label>
+          <input
+            className="w-full p-2 border rounded-lg"
+            type={showAccountNumber ? "text" : "password"}
+            value={bankDetails.confirmAccountNumber}
+            onChange={(e) => setBankDetails({ ...bankDetails, confirmAccountNumber: e.target.value })}
+          />
+
+          <label className="block mb-1 mt-2">IFSC Code</label>
+          <input
+            className="w-full p-2 border rounded-lg"
+            type="text"
+            value={bankDetails.ifsc}
+            onChange={(e) => setBankDetails({ ...bankDetails, ifsc: e.target.value })}
+          />
+        </div>
+      )}
+
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
+      <button
+        className="w-full bg-green-500 text-white p-2 rounded-lg mt-4"
+        onClick={handleSave}
+      >
+        Save Details
+      </button>
     </div>
   );
 };
