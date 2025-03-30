@@ -107,18 +107,19 @@ const UserInfoForm = () => {
         <input
           name="name"
           value={userInfo.name}
-          onChange={handleChange}
-          disabled={!isEditing}
+         
           required
+          readOnly
+
           placeholder="Username"
           className="w-full p-2 border rounded-lg"
         />
         <input
           name="mobile"
           value={userInfo.mobile}
-          onChange={handleChange}
-          disabled={!isEditing}
+          
           required
+          readOnly
           placeholder="Mobile No."
           className="w-full p-2 border rounded-lg"
         />

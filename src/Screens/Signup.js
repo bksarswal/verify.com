@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import app from "../Config/firebaseConfig";
 
 const Signup = () => {
@@ -82,8 +83,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen mt-14 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full rounded-[30px] bg-[#F2FAFA] px-8 relative">
+    <div className="min-h-screen bg-[#F2FAFA] mt-14 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full rounded-[30px] shadow-xl bg-[#F2FAFA] px-8 relative">
         <h2 className="text-[36px] font-bold text-center mb-2 font-poppins">Signup</h2>
         <form onSubmit={handleSubmit} className="space-y-2">
           <div>
@@ -137,6 +138,10 @@ const Signup = () => {
           <button type="submit" disabled={isSubmitting} className="w-full bg-[#2196F3] text-white py-2 rounded-xl">
             {isSubmitting ? "Signing up..." : "Signup"}
           </button>
+          <div className="flex justify-center">
+            <p>Allready have an account?</p>
+            <Link className="text-blue-500 text-xl" to="/signin">Signin</Link>
+          </div>
         </form>
       </div>
     </div>
