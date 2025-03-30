@@ -109,7 +109,7 @@ const Home = () => {
       </div>
       <MinimumPayout />
       <PaymentMethod />
-      <div className="relative mt-[30vh]"></div>
+      {/* <div className="relative mt-[30vh]"></div> */}
     </>
   );
 };

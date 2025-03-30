@@ -13,7 +13,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-md shadow-md">
+    <div className="w-full fixed top-0 left-0 z-50 bg-[#F2FAFA] backdrop-blur-md shadow-md">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-3">
         
         {/* Logo */}
@@ -71,7 +71,7 @@ export default function Navbar() {
       {isMenuOpen && (
         <>
           {/* Overlay */}
-          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setIsMenuOpen(false)}></div>
+          <div className="fixed inset-0 bg-black/20 z-40" onClick={() => setIsMenuOpen(false)}></div>
 
           {/* Sidebar */}
           <div
@@ -79,7 +79,7 @@ export default function Navbar() {
               isMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="relative flex flex-col h-full space-y-6 p-6 bg-[#a1c5c5] shadow-inner rounded-l-lg">
+            <div className="relative flex flex-col h-full space-y-6 p-6 bg-[#e9f7f7] shadow-inner rounded-l-lg">
               
               {/* Close Button */}
               <button
@@ -100,7 +100,7 @@ export default function Navbar() {
                 <Link
                   key={index}
                   to={link.to}
-                  className="flex items-center text-[#2196F3] bg-white px-4 py-2 rounded-md text-center font-semibold shadow-md hover:bg-[#e3f2fd] hover:shadow-lg transition-all duration-300"
+                  className="flex items-center text-[#2196F3] px-4 py-2 rounded-md text-center font-semibold shadow-md hover:bg-gray-200 hover:shadow-lg transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.icon} {link.label}

@@ -3,7 +3,7 @@ import MinimumPay from "../Assetss/project.png"
 import TwoDoller from "../Assetss/Untitled-1.png"
 const MinimumPayout = () => {
   return (
-    <div className="w-full  bg-white py-16">
+    <div className="w-full  bg-[#F2FAFA] py-16">
       <div className="max-w-7xl mx-auto px-4 w-full  flex flex-col items-center gap-8  md:flex-row md:gap-12">
       {/* <section className="w-full max-w-screen-xl flex flex-col items-center gap-8 px-6 md:flex-row md:gap-12"> */}
 {/* Left section with images and data */}

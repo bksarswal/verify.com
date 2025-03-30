@@ -4,7 +4,7 @@ import BankTransfer from "../Assetss/bank_to_bank_transfer.png"
 import UpiPament from "../Assetss/upigpay-1.jpg"
 const PaymentMethod = () => {
   return (
-    <div className="w-full bg-white py-16">
+    <div className="w-full bg-[#F2FAFA] py-16">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12">
           <span className="text-blue-500">Payment</span>{' '}

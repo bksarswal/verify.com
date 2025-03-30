@@ -2,7 +2,7 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <div className="w-full mt-16 min-h-screen bg-[#F7F9FA] relative">
+    <div className="w-full mt-16 min-h-screen bg-[#F2FAFA] relative">
       <div className="mx-auto max-w-7xl px-4 pt-16 sm:pt-24 lg:pt-32">
         <div className="space-y-12">
           <h1 className="text-4xl font-semibold text-center mb-8 text-gray-800">

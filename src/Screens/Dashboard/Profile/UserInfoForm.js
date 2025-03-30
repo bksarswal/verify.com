@@ -9,6 +9,7 @@ const UserInfoForm = () => {
     mobile: '',
     email: '',
     dob: '',
+    gender: '',
     country: '',
     state: '',
   });
@@ -45,8 +46,10 @@ const UserInfoForm = () => {
           setUserInfo((prevInfo) => ({ ...prevInfo, email: user.email }));
 
           if (docSnap.exists()) {
-            setUserInfo((prevInfo) => ({ ...prevInfo, ...docSnap.data() }));
-            const selectedCountry = countries.find((c) => c.name === docSnap.data().country);
+            const userData = docSnap.data();
+            setUserInfo((prevInfo) => ({ ...prevInfo, ...userData }));
+            
+            const selectedCountry = countries.find((c) => c.name === userData.country);
             if (selectedCountry) {
               setStates(selectedCountry.states);
             }
@@ -103,7 +106,7 @@ const UserInfoForm = () => {
       <form className="space-y-4">
         <input
           name="name"
-          value={userInfo.name} // Fixed 'username' to 'name'
+          value={userInfo.name}
           onChange={handleChange}
           disabled={!isEditing}
           required
@@ -135,6 +138,19 @@ const UserInfoForm = () => {
           required
           className="w-full p-2 border rounded-lg"
         />
+        <select
+          name="gender"
+          value={userInfo.gender}
+          onChange={handleChange}
+          disabled={!isEditing}
+          required
+          className="w-full p-2 border rounded-lg"
+        >
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
         <select
           name="country"
           value={userInfo.country}

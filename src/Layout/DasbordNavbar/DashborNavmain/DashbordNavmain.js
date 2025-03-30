@@ -54,7 +54,7 @@ function DashbordNavbar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-50 mx-auto flex items-center justify-between px-6 py-3 bg-white shadow-sm">
+      <div className="fixed top-0 left-0 w-full z-50 mx-auto flex items-center justify-between px-6 py-3 bg-[#F2FAFA] shadow-sm">
         {/* Logo and Brand Name */}
         <Link to="/dashboard">
           <div className="flex items-center">
@@ -171,7 +171,7 @@ function DashbordNavbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
+        className={`fixed top-0 right-0 h-full w-64 bg-[#F2FAFA] shadow-lg transform ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out z-50`}
       >
