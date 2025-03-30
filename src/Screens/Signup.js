@@ -16,6 +16,9 @@ const Signup = () => {
     mobile: "",
     password: "",
     confirmPassword: "",
+    gender: "",
+    dob: "",
+    termsAccepted: false,
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,8 +26,11 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -38,6 +44,9 @@ const Signup = () => {
     if (!formData.name) newErrors.name = "*Name is required";
     if (!formData.email) newErrors.email = "*Email is required";
     if (!formData.mobile) newErrors.mobile = "*Mobile is required";
+    if (!formData.gender) newErrors.gender = "*Gender is required";
+    if (!formData.dob) newErrors.dob = "*Date of Birth is required";
+    if (!formData.termsAccepted) newErrors.termsAccepted = "*You must accept the Terms & Conditions";
     if (!formData.password) newErrors.password = "*Password is required";
     if (!formData.confirmPassword) newErrors.confirmPassword = "*Confirm Password is required";
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "*Passwords do not match";
@@ -52,17 +61,18 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
-      // Save user data to Firestore
       await setDoc(doc(db, "users", user.uid), {
         name: formData.name,
         email: formData.email,
         mobile: formData.mobile,
-        uid: user.uid, // Store UID for reference
+        gender: formData.gender,
+        dob: formData.dob,
+        uid: user.uid,
         createdAt: new Date(),
       });
 
       alert("User signed up successfully!");
-      navigate("/dashboard"); // Redirect to user info page
+      navigate("/dashboard");
     } catch (error) {
       alert(error.message);
       setErrors({ auth: "*An error occurred. Please try again." });
@@ -75,40 +85,58 @@ const Signup = () => {
     <div className="min-h-screen mt-14 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full rounded-[30px] bg-[#F2FAFA] px-8 relative">
         <h2 className="text-[36px] font-bold text-center mb-2 font-poppins">Signup</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2">
           <div>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Name" />
-            {errors.name && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.name}</p>}
+            <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl" placeholder="Name" />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
           <div>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Email" />
-            {errors.email && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.email}</p>}
+            <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl" placeholder="Email" />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
           <div>
-            <input type="tel" name="mobile" value={formData.mobile} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Mobile" />
-            {errors.mobile && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.mobile}</p>}
+            <input type="tel" name="mobile" value={formData.mobile} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl" placeholder="Mobile" />
+            {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>}
           </div>
+          <div>
+            <select name="gender" value={formData.gender} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+          </div>
+          <div>
+            <input type="date" name="dob" value={formData.dob} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl" />
+            {errors.dob && <p className="text-red-500 text-sm mt-1">{errors.dob}</p>}
+          </div>
+          
           <div className="relative">
-            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Password" />
+            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl" placeholder="Password" />
             <span className="absolute right-3 top-3 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
-            {errors.password && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
           <div className="relative">
-            <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2196F3] font-poppins text-[14px]" placeholder="Confirm Password" />
+            <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full px-4 py-2 border border-black rounded-xl" placeholder="Confirm Password" />
             <span className="absolute right-3 top-3 cursor-pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
               {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
-            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1 font-poppins">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
           </div>
-          <button type="submit" disabled={isSubmitting} className="w-full bg-[#2196F3] text-white py-2 rounded-xl hover:bg-[#1976D2] focus:outline-none focus:ring-2 focus:ring-[#2196F3] focus:ring-offset-2 disabled:opacity-50 transition-colors font-poppins text-[18px]">
+
+          <div>
+            <label className="flex items-center">
+              <input type="checkbox" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} className="mr-2" />
+              I accept the <a href="/terms" className="text-[#2196F3]">Terms & Conditions</a>
+            </label>
+            {errors.termsAccepted && <p className="text-red-500 text-sm mt-1">{errors.termsAccepted}</p>}
+          </div>
+          <button type="submit" disabled={isSubmitting} className="w-full bg-[#2196F3] text-white py-2 rounded-xl">
             {isSubmitting ? "Signing up..." : "Signup"}
           </button>
-          <div className="text-center font-poppins">
-            Already have an account? <a href="/signin" className="text-[#2196F3] hover:text-[#1976D2]">Signin</a>
-          </div>
         </form>
       </div>
     </div>

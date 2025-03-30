@@ -136,7 +136,7 @@ export default function WithdrawalPage() {
                   ))}
                 </select>
               ) : (
-                <button className="mb-4 w-full p-2 border rounded bg-blue-500 text-white" onClick={() => window.location.href = '/add-payment'}>Add Bank Account</button>
+                <button className="mb-4 w-full p-2 border rounded bg-blue-500 text-white" onClick={() => window.location.href = '/dashboard/profile/add-payments'}>Add Bank Account</button>
               )}
             </>
           )}

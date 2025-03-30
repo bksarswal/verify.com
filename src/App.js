@@ -20,6 +20,7 @@ import UserProfilePage from "./Screens/Dashboard/Profile/Userprofile";
 import WithdrawalPag from "./Screens/Dashboard/Withdraw/Withdraw";
 import ReferralPage from "./Screens/Dashboard/Referral/Referral";
 import TaskHistory from "./Screens/Dashboard/TaskHistory/TaskHistory";
+import PaymentDetails from "./Screens/Dashboard/Profile/PaymentDetails";
 
 
 const MainRouter = createBrowserRouter([
@@ -59,7 +60,7 @@ const MainRouter = createBrowserRouter([
     children: [
       { path: "", element: <DashboardHome /> },
       { path: "home", element: <DashboardHome /> },
-      { path: "profile", element: <UserProfilePage /> },
+      { path: "profile", element: <UserProfilePage />,children:[{path:"add-payments",element:<PaymentDetails/>}] },
       { path: "withdraw", element: <WithdrawalPag /> },
       { path: "referral", element: <ReferralPage /> },
       { path: "task-history", element: <TaskHistory /> },

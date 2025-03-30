@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Bell, CircleUserRound } from "lucide-react";
+import { Bell, CircleUserRound  } from "lucide-react";
+import { XCircle } from "lucide-react";
+
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "../../../Config/firebaseConfig"; // Adjust the import based on your Firebase setup
 import accountBalanceWalletIcon from "../DashborNavmain/account-balance-wallet-55dp-000000-fill0-wght400-grad0-opsz48-1.png";
@@ -177,8 +179,8 @@ function DashbordNavbar() {
           className="absolute top-4 right-4 p-2 rounded-md bg-gray-100 hover:bg-gray-300 transition"
           onClick={toggleMenu}
         >
-          <span className="block w-5 h-1 bg-black mb-1 rotate-45 transform origin-center"></span>
-          <span className="block w-5 h-1 bg-black -rotate-45 transform origin-center"></span>
+      <XCircle/> 
+
         </button>
         <nav className="mt-16 px-4 space-y-4">
           <Link

@@ -1,5 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCogs, FaBars } from "react-icons/fa";
 import logo from "../Assetss/imadsdge.png";
 
 export default function Navbar() {
@@ -8,20 +10,15 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Function to determine if a link is active
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-sm shadow-md">
+    <div className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-md shadow-md">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-3">
+        
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <img
-            src={logo}
-            className="w-[50px] h-[50px] object-cover"
-            alt="Logo"
-          />
+          <img src={logo} className="w-[50px] h-[50px] object-cover" alt="Logo" />
           <span className="text-[24px] sm:text-[32px] lg:text-[40px] font-semibold text-black font-poppins">
             Verify Earn
           </span>
@@ -29,36 +26,21 @@ export default function Navbar() {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link
-            to="/home"
-            className={`text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
-              isActive("/home")
-                ? "text-[#2196F3] "
-                : "text-[#252525] hover:text-[#2196F3] "
-            }`}
-          >
-            Home
-          </Link>
-          <Link
-            to="/howitsworks"
-            className={`text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
-              isActive("/howitsworks")
-                ? "text-[#2196F3] "
-                : "text-[#252525] hover:text-[#2196F3] "
-            }`}
-          >
-            How it&apos;s Work
-          </Link>
-          <Link
-            to="/about"
-            className={`text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
-              isActive("/about")
-                ? "text-[#2196F3] "
-                : "text-[#252525] hover:text-[#2196F3] "
-            }`}
-          >
-            About Us
-          </Link>
+          {[
+            { to: "/home", label: "Home", icon: <FaHome /> },
+            { to: "/howitsworks", label: "How it Works", icon: <FaCogs /> },
+            { to: "/about", label: "About Us", icon: <FaInfoCircle /> },
+          ].map((link, index) => (
+            <Link
+              key={index}
+              to={link.to}
+              className={`flex items-center space-x-2 text-[16px] lg:text-[20px] font-bold font-poppins transition-colors ${
+                isActive(link.to) ? "text-[#2196F3]" : "text-[#252525] hover:text-[#2196F3]"
+              }`}
+            >
+              {link.icon} <span>{link.label}</span>
+            </Link>
+          ))}
         </div>
 
         {/* Desktop Auth Buttons */}
@@ -79,41 +61,8 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
-          <button
-            className="text-[#252525] focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            )}
+          <button className="text-[#252525] focus:outline-none" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <FaBars size={24} />
           </button>
         </div>
       </nav>
@@ -122,64 +71,43 @@ export default function Navbar() {
       {isMenuOpen && (
         <>
           {/* Overlay */}
-          <div
-            className="fixed inset-0 bg-black/50 z-40"
-            onClick={() => setIsMenuOpen(false)}
-          ></div>
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setIsMenuOpen(false)}></div>
 
           {/* Sidebar */}
           <div
-  className={`fixed top-0 right-0 w-64 h-full bg-gradient-to-b from-blue-500 to-cyan-500 text-white shadow-lg z-50 transform transition-transform duration-300 ${
-    isMenuOpen ? "translate-x-0" : "translate-x-full"
-  }`}
->
-  <div className="flex min-h-lvh flex-col space-y-6 p-6 bg-[#96f5f5]">
-    <Link
-      to="/"
-      className={`text-[18px] font-bold font-poppins px-4 py-2 rounded-md transition-colors ${
-        isActive("/") ? "text-[#2196F3]" : "text-white hover:text-[#2196F3]"
-      }`}
-      onClick={() => setIsMenuOpen(false)}
-    >
-      Home
-    </Link>
-    <Link
-      to="/how-it-works"
-      className={`text-[18px] font-bold font-poppins px-4 py-2 rounded-md transition-colors ${
-        isActive("/how-it-works")
-          ? "text-[#2196F3]"
-          : "text-white hover:text-[#2196F3]"
-      }`}
-      onClick={() => setIsMenuOpen(false)}
-    >
-      How it Works
-    </Link>
-    <Link
-      to="/about"
-      className={`text-[18px] font-bold font-poppins px-4 py-2 rounded-md transition-colors ${
-        isActive("/about") ? "text-[#2196F3]" : "text-white hover:text-[#2196F3]"
-      }`}
-      onClick={() => setIsMenuOpen(false)}
-    >
-      About Us
-    </Link>
-    <Link
-      to="/signin"
-      className="text-[#2196F3] bg-white px-4 py-2 rounded-md text-center hover:bg-gray-100 transition"
-      onClick={() => setIsMenuOpen(false)}
-    >
-      Sign in
-    </Link>
-    <Link
-      to="/signup"
-      className="text-[#2196F3] bg-white px-4 py-2 rounded-md text-center hover:bg-gray-100 transition"
-      onClick={() => setIsMenuOpen(false)}
-    >
-      Sign up
-    </Link>
-  </div>
-</div>
+            className={`fixed top-0 right-0 w-64 h-screen bg-gradient-to-b from-blue-600 to-cyan-500 text-white shadow-2xl z-50 transform transition-transform duration-300 ${
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="relative flex flex-col h-full space-y-6 p-6 bg-[#a1c5c5] shadow-inner rounded-l-lg">
+              
+              {/* Close Button */}
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-3 right-3 text-black hover:text-red-500 transition-all duration-200"
+              >
+                <IoCloseCircleOutline size={30} />
+              </button>
 
+              {/* Navigation Links with Icons */}
+              {[
+                { to: "/", label: "Home", icon: <FaHome size={18} className="mr-2" /> },
+                { to: "/howitsworks", label: "How it Works", icon: <FaCogs size={18} className="mr-2" /> },
+                { to: "/about", label: "About Us", icon: <FaInfoCircle size={18} className="mr-2" /> },
+                { to: "/signin", label: "Sign In", icon: <FaSignInAlt size={18} className="mr-2" /> },
+                { to: "/signup", label: "Sign Up", icon: <FaUserPlus size={18} className="mr-2" /> },
+              ].map((link, index) => (
+                <Link
+                  key={index}
+                  to={link.to}
+                  className="flex items-center text-[#2196F3] bg-white px-4 py-2 rounded-md text-center font-semibold shadow-md hover:bg-[#e3f2fd] hover:shadow-lg transition-all duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.icon} {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </>
       )}
     </div>
