@@ -72,7 +72,6 @@ const Signin = () => {
     <div className="min-h-screen bg-[#F2FAFA] mt-14 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full rounded-[30px] shadow-md bg-[#F2FAFA] p-8 relative">
         <h2 className="text-[48px] font-bold text-center mb-8 font-poppins">Signin</h2>
-
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <input
@@ -105,7 +104,6 @@ const Signin = () => {
           </div>
 
           {errors.auth && <p className="text-red-500 text-center">{errors.auth}</p>}
-
           <button
             type="submit"
             disabled={isSubmitting}

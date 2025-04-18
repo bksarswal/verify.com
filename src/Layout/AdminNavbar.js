@@ -13,17 +13,17 @@ export default function AdminNavbar() {
         <Link to="/" className="flex items-center space-x-2">
           <img src={logo} className="w-[50px] h-[50px] object-cover" alt="Logo" />
           <span className="text-[24px] sm:text-[32px] lg:text-[40px] font-semibold text-black font-poppins">
-            Verify Earn
+            Verify Earn  
           </span>
         </Link>
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
           <Link to="/admindashboard/additems" className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins">
-            Add Items
+            Add Items  
           </Link>
           <Link to="/admindashboard/update" className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins">
-            Update Items
+            Update Items  
           </Link>
         </div>
 

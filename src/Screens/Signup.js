@@ -140,7 +140,7 @@ const Signup = () => {
           </button>
           <div className="flex justify-center">
             <p>Allready have an account?</p>
-            <Link className="text-blue-500 text-xl" to="/signin">Signin</Link>
+            <Link className="text-blue-500 pb-2 text-center pl-3" to="/signin">Signin</Link>
           </div>
         </form>
       </div>
