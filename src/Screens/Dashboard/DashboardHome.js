@@ -24,6 +24,7 @@ const DashboardHome = () => {
             Earinhg: 100,
             verified: false,
             code: "",
+            verificationCode: "1234", // Add a unique verification code
           },
           {
             id: "2",
@@ -31,6 +32,7 @@ const DashboardHome = () => {
             Earinhg: 200,
             verified: false,
             code: "",
+            verificationCode: "5678", // Another verification code
           },
           {
             id: "3",
@@ -38,6 +40,7 @@ const DashboardHome = () => {
             Earinhg: 150,
             verified: false,
             code: "",
+            verificationCode: "91011", // Another verification code
           },
           // Add more dummy tasks here
         ];
@@ -67,7 +70,9 @@ const DashboardHome = () => {
   const handleVerify = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, verified: task.code === "1234" } : task
+        task.id === id
+          ? { ...task, verified: task.code === task.verificationCode }
+          : task
       )
     );
   };
@@ -256,3 +261,4 @@ const DashboardHome = () => {
 };
 
 export default DashboardHome;
+   
