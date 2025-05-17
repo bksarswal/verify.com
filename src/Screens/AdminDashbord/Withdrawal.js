@@ -40,58 +40,134 @@ export default function AdminWithdrawalPanel() {
   };
 
   return (
-    <div className="p-6 mt-24 min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold text-center mb-6 text-blue-800">Admin Withdrawal Panel</h1>
+    <div className="p-6 mt-24 min-h-screen bg-gradient-to-br from-gray-100 to-blue-50">
+      <h1 className="text-3xl font-bold text-center mb-6 text-blue-700 ">
+        Admin Withdrawal Panel
+      </h1>
+
       {loading ? (
-        <p className="text-center text-gray-600">Loading withdrawals...</p>
+        <p className="text-center text-gray-600 text-lg">Loading withdrawals...</p>
+      ) : withdrawals.length === 0 ? (
+        <p className="text-center text-gray-500 text-lg">No withdrawal requests found.</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full table-auto border-collapse bg-white shadow-lg rounded-lg">
-            <thead className="bg-blue-500 text-white">
-              <tr>
-                <th className="p-3 border">User ID</th>
-                <th className="p-3 border">Amount</th>
-                <th className="p-3 border">Method</th>
-                <th className="p-3 border">Account</th>
-                <th className="p-3 border">Status</th>
-                <th className="p-3 border">Requested At</th>
-                <th className="p-3 border">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {withdrawals.map((item) => (
-                <tr key={item.id} className="text-center hover:bg-gray-50">
-                  <td className="p-2 border">{item.userId}</td>
-                  <td className="p-2 border text-green-600 font-semibold">₹{item.amount}</td>
-                  <td className="p-2 border">{item.method}</td>
-                  <td className="p-2 border">{item.account}</td>
-                  <td className={`p-2 border font-semibold ${item.status === 'Paid' ? 'text-green-600' : 'text-yellow-600'}`}>{item.status}</td>
-                  <td className="p-2 border">{new Date(item.createdAt?.seconds * 1000).toLocaleString()}</td>
-                  <td className="p-2 border space-x-2">
-                    {item.status === "Pending" ? (
-                      <>
-                        <button
-                          onClick={() => handleStatusUpdate(item.id, "Paid")}
-                          className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                        >
-                          Mark as Paid
-                        </button>
-                        <button
-                          onClick={() => handleStatusUpdate(item.id, "Rejected")}
-                          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                        >
-                          Reject
-                        </button>
-                      </>
-                    ) : (
-                      <span className="text-gray-400 italic">No action</span>
-                    )}
-                  </td>
+        <>
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto rounded-lg shadow-xl bg-white">
+            <table className="w-full table-auto border-collapse">
+              <thead className="bg-blue-600 text-white">
+                <tr>
+                  <th className="p-3 border">User ID</th>
+                  <th className="p-3 border">Amount</th>
+                  <th className="p-3 border">Method</th>
+                  <th className="p-3 border">Account</th>
+                  <th className="p-3 border">Status</th>
+                  <th className="p-3 border">Requested At</th>
+                  <th className="p-3 border">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {withdrawals.map((item) => (
+                  <tr key={item.id} className="text-center hover:bg-gray-100 transition duration-200">
+                    <td className="p-3 border">{item.userId}</td>
+                    <td className="p-3 border text-green-700 font-semibold">₹{item.amount}</td>
+                    <td className="p-3 border">{item.method}</td>
+                    <td className="p-3 border">{item.account}</td>
+                    <td className="p-3 border">
+                      <span
+                        className={`px-3 py-1 text-sm font-medium rounded-full ${
+                          item.status === "Paid"
+                            ? "bg-green-100 text-green-700"
+                            : item.status === "Rejected"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-yellow-100 text-yellow-600"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="p-3 border">
+                      {item.createdAt?.seconds
+                        ? new Date(item.createdAt.seconds * 1000).toLocaleString()
+                        : "N/A"}
+                    </td>
+                    <td className="p-3 border space-x-2">
+                      {item.status === "Pending" ? (
+                        <>
+                          <button
+                            onClick={() => handleStatusUpdate(item.id, "Paid")}
+                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg"
+                          >
+                            Mark Paid
+                          </button>
+                          <button
+                            onClick={() => handleStatusUpdate(item.id, "Rejected")}
+                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg"
+                          >
+                            Reject
+                          </button>
+                        </>
+                      ) : (
+                        <span className="text-gray-400 italic">No action</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile View */}
+          <div className="md:hidden space-y-4">
+            {withdrawals.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-xl p-4 shadow-md border"
+              >
+                <div className="text-sm">
+                  <p><strong>User ID:</strong> {item.userId}</p>
+                  <p className="text-green-700 font-semibold"><strong className="text-black font-bold">Amount:</strong>{item.amount}₹</p>
+                  <p><strong>Method:</strong> {item.method}</p>
+                  <p><strong>Account:</strong> {item.account}</p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span
+                      className={`px-2 py-1 rounded text-sm font-medium ${
+                        item.status === "Paid"
+                          ? "bg-green-100 text-green-700"
+                          : item.status === "Rejected"
+                          ? "bg-red-100 text-red-600"
+                          : "bg-yellow-100 text-yellow-600"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </p>
+                  <p><strong>Requested:</strong>{" "}
+                    {item.createdAt?.seconds
+                      ? new Date(item.createdAt.seconds * 1000).toLocaleString()
+                      : "N/A"}
+                  </p>
+                </div>
+                {item.status === "Pending" && (
+                  <div className="mt-3 flex space-x-2">
+                    <button
+                      onClick={() => handleStatusUpdate(item.id, "Paid")}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-1 rounded"
+                    >
+                      Mark Paid
+                    </button>
+                    <button
+                      onClick={() => handleStatusUpdate(item.id, "Rejected")}
+                      className="flex-1 bg-red-600 hover:bg-red-700 text-white py-1 rounded"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
