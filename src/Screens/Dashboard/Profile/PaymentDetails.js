@@ -71,7 +71,9 @@ const PaymentDetails = () => {
   };
 
   return (
+
     <div className=" max-w-lg mx-auto p-4 bg-white rounded-lg shadow-md">
+
       <h2 className="text-xl font-bold mb-4">Payment Details</h2>
 
       <label className="block mb-1">Payment Method</label>

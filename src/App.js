@@ -16,6 +16,7 @@ import AuthRouter from "./Routing/AuthRouter";
 import Adminhome from "./Screens/AdminDashbord/Adminhome";
 import Adminrouter from "./Routing/Adminrouter";
 import Updateitms from "./Screens/AdminDashbord/Updateitms";
+import AdminWithdrawalPanel from "./Screens/AdminDashbord/Withdrawal";
 import UserProfilePage from "./Screens/Dashboard/Profile/Userprofile";
 import WithdrawalPag from "./Screens/Dashboard/Withdraw/Withdraw";
 import ReferralPage from "./Screens/Dashboard/Referral/Referral";
@@ -78,6 +79,7 @@ const MainRouter = createBrowserRouter([
       { path: "", element: <Adminhome /> },
       { path: "additems", element: <Adminhome/> },
       { path: "update", element: <Updateitms/> },
+      { path: "withdrawal", element: <AdminWithdrawalPanel/> },
       { path: "dashboardhome", element: <DashboardHome/> },
     ],
   }

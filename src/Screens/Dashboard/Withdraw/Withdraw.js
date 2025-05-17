@@ -123,7 +123,7 @@ export default function WithdrawalPage() {
               {upiId ? (
                 <input type="text" value={upiId} readOnly className="mb-4 w-full p-2 border rounded bg-gray-100" />
               ) : (
-                <button className="mb-4 w-full p-2 border rounded bg-blue-500 text-white" onClick={() => window.location.href = '/add-payment'}>Add UPI</button>
+                <button className="mb-4 w-full p-2 border rounded bg-blue-500 text-white" onClick={() => window.location.href = '/dashboard/profile/add-payments'}>Add UPI</button>
               )}
             </>
           ) : (

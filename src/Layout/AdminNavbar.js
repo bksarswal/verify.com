@@ -25,6 +25,9 @@ export default function AdminNavbar() {
           <Link to="/admindashboard/update" className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins">
             Update Items  
           </Link>
+          <Link to="/admindashboard/withdrawal" className="text-[16px] lg:text-[20px] text-[#252525] hover:text-gray-700 transition-colors font-bold font-poppins">
+            Withdrawal
+          </Link>
         </div>
 
         {/* Desktop Logout Button */}
@@ -70,6 +73,11 @@ export default function AdminNavbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Update Items
+              </Link>
+              <Link to="/admindashboard/withdrawal" className="text-[18px] font-bold font-poppins hover:text-blue-400 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Withdrawals
               </Link>
               <button className="bg-red-600 text-white hover:bg-red-700 rounded-full px-6 py-2 font-semibold"
                 onClick={() => {
